@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FeeEase - Simplified School Fee Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #7393B3;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        nav a {
+            text-decoration: none;
+            color: #7393B3;
+            font-weight: bold;
+            border: 1px solid #7393B3;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            background-color: #7393B3;
+            color: white;
+        }
+        section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+        .feature {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            flex: 1 1 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            width: 100%;
+            background-color: #7393B3;
+            color: white;
+            margin-top: 2rem;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to FeeEase</h1>
+        <p>Simplified Fee Management for Schools</p>
+    </header>
+
+    <nav>
+        <a href="/fee_ease/login">Login</a>
+        <a href="/fee_ease/register_school">Register Your School</a>
+    </nav>
+
+    <section>
+        <h2>What FeeEase Offers</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>School Registration</h3>
+                <p>Easily register your school and get started with FeeEase in minutes.</p>
+            </div>
+            <div class="feature">
+                <h3>School Admin Login</h3>
+                <p>Manage your school's fees, students, and other users with secure access.</p>
+            </div>
+            <div class="feature">
+                <h3>User Management</h3>
+                <p>Add and manage teachers, accountants, and other staff in the application.</p>
+            </div>
+            <div class="feature">
+                <h3>Student Data Management</h3>
+                <p>Maintain accurate records of students and their fees.</p>
+            </div>
+            <div class="feature">
+                <h3>Fee Tracking</h3>
+                <p>Keep track of fee payments, pending dues, and payment history.</p>
+            </div>
+            <div class="feature">
+                <h3>Detailed Reports</h3>
+                <p>Generate reports to analyze fee collection and student data.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 FeeEase. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>

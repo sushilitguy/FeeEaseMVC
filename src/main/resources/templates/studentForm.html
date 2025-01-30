@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Student - FeeEase</title>
+  <style>
+<!--    body {-->
+<!--      font-family: Arial, sans-serif;-->
+<!--      margin: 0;-->
+<!--      padding: 0;-->
+<!--      background-color: #f4f4f9;-->
+<!--      color: #333;-->
+<!--      display: flex;-->
+<!--      flex-direction: column;-->
+<!--      min-height: 100vh; /* Ensure the body takes up at least the full height of the viewport */-->
+<!--    }-->
+
+<!--    .container {-->
+<!--      flex: 1; /* Allows the container to take up available space */-->
+<!--      display: flex;-->
+<!--      justify-content: center;-->
+<!--      align-items: center;-->
+<!--      padding: 1rem;-->
+<!--    }-->
+
+<!--    footer {-->
+<!--      text-align: center;-->
+<!--      padding: 1rem;-->
+<!--      background-color: #7393B3;-->
+<!--      color: white;-->
+<!--      width: 100%;-->
+<!--    }-->
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+
+    header {
+        background-color: #7393B3;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #708090;
+        padding: 0.5rem 0;
+        text-align: center;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 1rem;
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s;
+        border-radius: 4px;
+    }
+
+    nav a:hover {
+        background-color: #A9A9A9;
+    }
+
+    .welcome {
+        text-align: center;
+        margin: 1.5rem 0;
+        font-size: 1.2rem;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    footer {
+        text-align: center;
+        padding: 1rem;
+        width: 100%;
+        background-color: #7393B3;
+        color: white;
+        margin-top: 2rem;
+        position: sticky;
+        left: 0;
+        bottom: 0;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-container input, .form-container select, .form-container button {
+      width: 95%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    .form-container button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .form-container button:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .success {
+      color: blue;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1 th:text="${SchoolName}">FeeEase Dashboard</h1>
+</header>
+
+<nav>
+  <a href="/" th:href="@{/fee_ease/dashboard}">Home</a>
+  <a href="/" th:href="@{/fee_ease/users}">User Management</a>
+  <a href="/" th:href="@{/fee_ease/students}">Student Management</a>
+  <a href="/fees" th:href="@{/fees}">Fees Management</a>
+</nav>
+
+<div class="welcome">
+  <p>Hi, <b th:text="${#authentication.name}"></b>! Manage Your Student's Data.</p>
+</div>
+
+<div class="container">
+  <div class="form-container">
+    <h2>Add Student</h2>
+    <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="success" th:text="${successMessage}"></div>
+    <form action="/students/add" method="post">
+      <label for="name">Student Name</label>
+      <input type="text" id="name" name="name" required placeholder="Enter Student Name">
+
+      <label for="fatherName">Father's Name</label>
+      <input type="text" id="fatherName" name="fatherName" required placeholder="Enter Father's Name">
+
+      <label for="motherName">Mother's Name</label>
+      <input type="text" id="motherName" name="motherName" required placeholder="Enter Mother's Name">
+
+      <label for="dob">Date of Birth (dd/MM/yyyy)</label>
+      <input type="date" id="dob" name="dob" required placeholder="Enter Date of Birth">
+
+      <label for="contactNo">Contact Number</label>
+      <input type="tel" id="contactNo" name="contactNo" required placeholder="Enter Contact Number">
+
+      <label for="schoolClass">Class</label>
+      <input type="text" id="schoolClass" name="schoolClass" required placeholder="Enter Class">
+
+      <label for="classSection">Section</label>
+      <input type="text" id="classSection" name="classSection" placeholder="Enter Section">
+
+      <label for="session">Session</label>
+      <input type="text" id="session" name="session" required placeholder="Enter Session">
+
+      <label for="feesAmount">Fees Amount</label>
+      <input type="number" id="feesAmount" name="feesAmount" placeholder="Enter Fees Amount">
+
+      <button type="submit">Add Student</button>
+    </form>
+  </div>
+</div>
+<footer>
+  <p>&copy; 2024 FeeEase. All Rights Reserved.</p>
+</footer>
+</body>
+</html>

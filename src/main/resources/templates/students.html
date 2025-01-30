@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Details - FeeEase</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        color: #333;
+    }
+
+    header {
+        background-color: #7393B3;
+        color: white;
+        padding: 1rem;
+        text-align: center;
+    }
+
+    nav {
+        background-color: #708090;
+        padding: 0.5rem 0;
+        text-align: center;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 1rem;
+        font-size: 1.1rem;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s;
+        border-radius: 4px;
+    }
+
+    nav a:hover {
+        background-color: #A9A9A9;
+    }
+
+    .welcome {
+        text-align: center;
+        margin: 1.5rem 0;
+        font-size: 1.2rem;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 1rem;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    footer {
+        text-align: center;
+        padding: 1rem;
+        width: 100%;
+        background-color: #7393B3;
+        color: white;
+        margin-top: 2rem;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+    }
+
+    .logout {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .logout button {
+        background-color: #7393B3;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .logout button:hover {
+        background-color: #637f9b;
+    }
+
+    table {
+        width: 100%;
+        margin: 20px auto;
+        border-collapse: collapse;
+    }
+
+    table, th, td {
+        border: 1px solid #ddd;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f4f4f4;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .btn {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-transform: uppercase;
+    }
+
+    .btn-view {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .btn-view:hover {
+        background-color: #45a049;
+    }
+
+    .btn-edit {
+        background-color: #7393B3;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background-color: #637f9b;
+    }
+
+    .btn-disable {
+        background-color: #800000;
+        color: white;
+    }
+
+    .btn-disable:hover {
+        background-color: #660000;
+    }
+
+    .btn-enable {
+        background-color: #63816f;
+        color: white;
+    }
+
+    .btn-enable:hover {
+        background-color: #303e36;
+    }
+
+    .btn-add {
+        text-align: center;
+        margin-top: 1rem;
+    }
+
+    .btn-add button {
+        background-color: #7393B3;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-add:hover {
+        background-color: #637f9b;
+    }
+
+    .error {
+        color: red;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .success {
+        color: blue;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1 th:text="${SchoolName}">FeeEase Dashboard</h1>
+</header>
+
+<nav>
+  <a href="/" th:href="@{/fee_ease/dashboard}">Home</a>
+  <a href="/" th:href="@{/fee_ease/users}">User Management</a>
+  <a href="#">Student Management</a>
+  <a href="/fees" th:href="@{/fees}">Fees Management</a>
+</nav>
+
+<div class="welcome">
+  <p>Hi, <b th:text="${#authentication.name}"></b>! Manage Your Student's Data.</p>
+</div>
+
+<div class="container">
+  <a class="btn-add" th:if="${Role == 'Admin'}" th:href="@{/fee_ease/students/add}" style="text-decoration: none;">
+    <button>Add Student</button>
+  </a>
+  <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+  <div th:if="${successMessage}" class="success" th:text="${successMessage}"></div>
+  <table>
+    <thead>
+    <tr>
+      <th>S. No.</th>
+      <th>Student Name</th>
+      <th>Class</th>
+      <th>Section</th>
+      <th>Date of Birth</th>
+      <th>Session</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="student, iterStat : ${students}">
+      <td th:text="${iterStat.index + 1}"></td>
+      <td th:text="${student.name}"></td>
+      <td th:text="${student.schoolClass}"></td>
+      <td th:text="${student.classSection}"></td>
+      <td th:text="${student.dob}"></td>
+      <td th:text="${student.session}"></td>
+      <td th:if="${Role == 'Admin'}">
+        <form th:action="@{/fee_ease/students/view/{id}(id=${student.id})}" method="get" style="display:inline;">
+          <button class="btn btn-view">View</button>
+        </form>
+        <form th:action="@{/students/edit/{id}(id=${student.id})}" method="get" style="display:inline;">
+          <button type="submit" class="btn btn-edit">Edit</button>
+        </form>
+        <form th:action="${student.enabled ? '/students/disable' : '/students/enable'}" method="post" style="display:inline;">
+          <input type="hidden" name="studentId" th:value="${student.id}"/>
+          <button
+                  type="submit"
+                  th:text="${student.enabled ? 'Disable' : 'Enable'}"
+                  th:class="${student.enabled ? 'btn btn-disable' : 'btn btn-enable'}">
+          </button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="logout">
+  <form action="/logout" method="post">
+    <button type="submit">Logout</button>
+  </form>
+</div>
+
+<footer>
+  <p>&copy; 2024 FeeEase. All Rights Reserved.</p>
+</footer>
+</body>
+</html>
