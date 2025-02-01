@@ -29,6 +29,8 @@ public class StudentController {
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("students", students);
         model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        model.addAttribute("SessionList", service.getAllSession(school.getId()));
+        model.addAttribute("StandardList", service.getAllStandards(school.getId()));
         return "students";
     }
 

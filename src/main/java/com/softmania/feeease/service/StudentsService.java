@@ -1,5 +1,7 @@
 package com.softmania.feeease.service;
 
+import com.softmania.feeease.dto.Session;
+import com.softmania.feeease.dto.Standard;
 import com.softmania.feeease.dto.StudentSummary;
 import com.softmania.feeease.model.Students;
 import com.softmania.feeease.model.Users;
@@ -68,5 +70,13 @@ public class StudentsService {
         long inactiveStudents = totalStudents - activeStudents;
 
         return new StudentSummary(totalStudents, activeStudents, inactiveStudents);
+    }
+
+    public List<Session> getAllSession(int schoolId) {
+        return repo.getAllSession(schoolId);
+    }
+
+    public List<Standard> getAllStandards(int schoolId) {
+        return repo.getAllStandards(schoolId);
     }
 }
