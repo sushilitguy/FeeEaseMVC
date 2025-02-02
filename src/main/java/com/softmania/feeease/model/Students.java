@@ -23,8 +23,8 @@ public class Students {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dob;
 	private String contactNo;
-	private String schoolClass;
-	private String classSection;
+	private String standard;
+	private String section;
 	private String session;
 	private double feesAmount;
 	private boolean isEnabled;

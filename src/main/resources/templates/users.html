@@ -55,33 +55,8 @@
     </style>
 </head>
 <body>
-
-<!-- Header (Navbar) -->
-<nav class="navbar navbar-expand-lg navbar-light border-bottom">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-primary" href="#">
-            <img src="/images/FeeEase.png" alt="FeeEase Logo" width="100" height="64">
-        </a>
-        <div class="d-flex justify-content-center position-absolute w-100" style="left: 50%; transform: translateX(-50%);">
-            <span class="navbar-text fw-bold" style="font-size: 2rem; color:#068388;" th:text="${SchoolName}">Dashboard</span>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/images/userIcon.png" class="rounded-circle" width="32" height="32">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
 
 <!-- Main Content -->
 <div class="main-content">
@@ -159,22 +134,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="py-3 border-top">
-    <div class="container-fluid d-flex justify-content-between">
-        <div class="col-md-4 d-flex align-items-center">
-            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-                <img src="/images/FeeEase.png" class="bi" width="30" height="24" alt="FeeEase Logo">
-            </a>
-            <span class="mb-3 mb-md-0 text-body-secondary">© 2025 FeeEase, All Rights Reserved</span>
-        </div>
-        <ul class="nav col-md-4 justify-content-end">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Dashboard</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">User Management</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Student Management</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Fee Management</a></li>
-        </ul>
-    </div>
-</footer>
+<div th:replace="fragments/footer :: footer"></div>
 <script>
     function confirmReset(event) {
         var confirmed = confirm("Are you sure you wish to reset password?");
