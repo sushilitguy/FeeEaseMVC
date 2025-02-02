@@ -79,4 +79,8 @@ public class StudentsService {
     public List<Standard> getAllStandards(int schoolId) {
         return repo.getAllStandards(schoolId);
     }
+
+    public List<Students> getStudentsBySessionAndStandard(String session, String standard) {
+        return repo.findBySessionAndStandard(session, standard);
+    }
 }

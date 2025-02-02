@@ -101,31 +101,6 @@
           <a class="nav-link active" href="#">Add/Edit User</a>
         </li>
       </ul>
-<!--      <div class="form-container">-->
-<!--        <h2 class="text-center mb-4" style="color:#068388">Add User</h2>-->
-<!--        <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>-->
-<!--        <div th:if="${successMessage}" class="success" th:text="${successMessage}"></div>-->
-<!--        <form id="addUserForm" th:action="${user != null ? '/fee_ease/users/update' : '/fee_ease/users/add'}" method="post" onsubmit="return validatePasswords()">-->
-<!--          <input type="hidden" name="userId" th:value="${user != null ? user.id : ''}" />-->
-
-<!--          <label for="username">User Name</label>-->
-<!--          <input type="text" id="username" name="userName" required placeholder="Enter User Name" th:value="${user != null ? user.userName : ''}" />-->
-
-<!--          <label for="role">Role</label>-->
-<!--          <select id="role" name="role" required>-->
-<!--            <option value="Admin" th:selected="${user != null && user.role == 'Admin'}">Admin</option>-->
-<!--            <option value="User" th:selected="${user != null && user.role == 'User'}">User</option>-->
-<!--          </select>-->
-
-<!--          <label for="password" th:if="${user == null}">Password</label>-->
-<!--          <input type="password" id="password" name="password" required placeholder="Enter Password" th:if="${user == null}"/>-->
-
-<!--          <label for="repassword" th:if="${user == null}">Re-Password</label>-->
-<!--          <input type="password" id="repassword" name="repassword" required placeholder="Re-enter Password" th:if="${user == null}"/>-->
-
-<!--          <button type="submit" th:text="${user != null ? 'Update User' : 'Add User'}">Add User</button>-->
-<!--        </form>-->
-<!--      </div>-->
       <div class="form-container">
                 <h2 class="text-center mb-4" style="color:#068388" th:text="${user != null ? 'Edit User Details' : 'Add User'}">Add User</h2>
                 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>

@@ -31,6 +31,8 @@ public interface StudentsRepo extends JpaRepository<Students, Integer> {
     @Query("SELECT DISTINCT new com.softmania.feeease.dto.Session(s.session) from Students s WHERE s.school.id = :schoolId")
     List<Session> getAllSession(@Param("schoolId") int schoolId);
 
-    @Query("SELECT DISTINCT new com.softmania.feeease.dto.Standard(s.classSection) from Students s WHERE s.school.id = :schoolId")
+    @Query("SELECT DISTINCT new com.softmania.feeease.dto.Standard(s.standard) from Students s WHERE s.school.id = :schoolId")
     List<Standard> getAllStandards(@Param("schoolId") int schoolId);
+
+    List<Students> findBySessionAndStandard(String session, String standard);
 }

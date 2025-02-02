@@ -10,9 +10,7 @@ import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,5 +54,11 @@ public class StudentController {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         return "studentForm";
+    }
+
+    @RequestMapping(value = "/students/filter", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Students> filterStudents(@RequestParam String session, @RequestParam String standard) {
+        return service.getStudentsBySessionAndStandard(session, standard);
     }
 }
