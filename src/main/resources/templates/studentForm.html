@@ -3,167 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add Student - FeeEase</title>
+  <title>Add/Edit Student - FeeEase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <style>
-<!--    body {-->
-<!--      font-family: Arial, sans-serif;-->
-<!--      margin: 0;-->
-<!--      padding: 0;-->
-<!--      background-color: #f4f4f9;-->
-<!--      color: #333;-->
-<!--      display: flex;-->
-<!--      flex-direction: column;-->
-<!--      min-height: 100vh; /* Ensure the body takes up at least the full height of the viewport */-->
-<!--    }-->
-
-<!--    .container {-->
-<!--      flex: 1; /* Allows the container to take up available space */-->
-<!--      display: flex;-->
-<!--      justify-content: center;-->
-<!--      align-items: center;-->
-<!--      padding: 1rem;-->
-<!--    }-->
-
-<!--    footer {-->
-<!--      text-align: center;-->
-<!--      padding: 1rem;-->
-<!--      background-color: #7393B3;-->
-<!--      color: white;-->
-<!--      width: 100%;-->
-<!--    }-->
     body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f9;
-      color: #333;
-    }
-
-    header {
-        background-color: #7393B3;
-        color: white;
-        padding: 1rem;
-        text-align: center;
-    }
-
-    nav {
-        background-color: #708090;
-        padding: 0.5rem 0;
-        text-align: center;
-    }
-
-    nav a {
-        color: white;
-        text-decoration: none;
-        margin: 0 1rem;
-        font-size: 1.1rem;
-        padding: 0.5rem 1rem;
-        transition: background-color 0.3s;
-        border-radius: 4px;
-    }
-
-    nav a:hover {
-        background-color: #A9A9A9;
-    }
-
-    .welcome {
-        text-align: center;
-        margin: 1.5rem 0;
-        font-size: 1.2rem;
-    }
-
-    .container {
+      height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
+      flex-direction: column;
     }
-
-    footer {
-        text-align: center;
-        padding: 1rem;
-        width: 100%;
-        background-color: #7393B3;
-        color: white;
-        margin-top: 2rem;
-        position: sticky;
-        left: 0;
-        bottom: 0;
+    .main-content {
+      flex-grow: 1;
+      display: flex;
+      overflow: hidden;
     }
-
-    .form-container {
-      background-color: #fff;
+    .menu-section {
+      background-color: #f8f9fa;
+      width: 250px;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 500px;
+      border-right: 1px solid #e9ecef;
+      overflow-y: auto;
     }
-
-    .form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .form-container label {
+    .menu-section a {
+      color: #068388;
+      font-weight: 500;
       display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .form-container input, .form-container select, .form-container button {
-      width: 95%;
       padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
+      text-decoration: none;
+      border-radius: 5px;
     }
-
-    .form-container button {
-      background-color: #4CAF50;
+    .menu-section a.active {
+      color: #fff;
+      background-color: #068388;
+    }
+    .menu-section a:hover {
+      background-color: rgba(6, 131, 136, 0.1);
+    }
+    .content-section {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .custom-add-user-tab {
+        color: #068388 !important;
+    }
+    .custom-add-user-tab:hover {
+        color: #fff !important;
+        background-color: #056a6e !important;
+        border-color: #056a6e !important;
+    }
+    .form-container {
+      max-width: 600px;
+      width: 100%;
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin:25px auto;
+    }
+    .btn-custom {
+      background-color: #068388;
       color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
     }
-
-    .form-container button:hover {
-      background-color: #45a049;
-    }
-
-    .error {
-      color: red;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-
-    .success {
-      color: blue;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-      text-align: center;
+    .btn-custom:hover {
+      background-color: #056a6e;
     }
   </style>
 </head>
 <body>
-<header>
-  <h1 th:text="${SchoolName}">FeeEase Dashboard</h1>
-</header>
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
 
-<nav>
-  <a href="/" th:href="@{/fee_ease/dashboard}">Home</a>
-  <a href="/" th:href="@{/fee_ease/users}">User Management</a>
-  <a href="/" th:href="@{/fee_ease/students}">Student Management</a>
-  <a href="/fees" th:href="@{/fees}">Fees Management</a>
-</nav>
+<div class="main-content">
+  <!-- Sidebar (Menu Section) -->
+  <div class="menu-section">
+    <nav class="nav flex-column">
+      <a class="nav-link" href="/fee_ease/dashboard">Dashboard</a>
+      <a class="nav-link" href="/fee_ease/users">User Management</a>
+      <a class="nav-link active" href="#">Student Management</a>
+      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Fees Management</a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="#">Fee Type</a></li>
+        <li><a class="dropdown-item" href="#">Fees</a></li>
+        <li><a class="dropdown-item" href="#">Reports</a></li>
+      </ul>
+    </nav>
+  </div>
 
-<div class="welcome">
-  <p>Hi, <b th:text="${#authentication.name}"></b>! Manage Your Student's Data.</p>
+  <!-- Content Section -->
+  <div class="content-section">
+    <div class="container-fluid">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link custom-add-user-tab" aria-current="page" href="/fee_ease/students">Students</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Add/Edit Student</a>
+        </li>
+      </ul>
+      <div class="form-container">
+        <h2 class="text-center mb-4" style="color:#068388" th:text="${student != null ? 'Edit Student Details' : 'Add Student'}">Add Student</h2>
+        <div th:if="${errorMessage}" id="errorMessage" class="alert alert-danger" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <form id="addUserForm" method="post" th:action="${student != null ? '/fee_ease/students/update' : '/fee_ease/students/add'}" onsubmit="return validateStudentData()">
+          <input type="hidden" name="studentId" th:value="${student != null ? student.id : ''}" />
+          <div class="mb-3">
+            <label for="studentName" class="form-label">User Name</label>
+            <input type="text" id="studentName" name="studentName" class="form-control" required placeholder="Enter Student Name" th:value="${student != null ? student.name : ''}">
+          </div>
+          <div class="mb-3">
+            <label for="fatherName" class="form-label">Father's Name</label>
+            <input type="text" id="fatherName" name="fatherName" class="form-control" required placeholder="Enter Father's Name" th:value="${student != null ? student.fatherName : ''}">
+          </div>
+          <div class="mb-3">
+            <label for="motherName" class="form-label">Mother's Name</label>
+            <input type="text" id="motherName" name="motherName" class="form-control" required placeholder="Enter Mother's Name" th:value="${student != null ? student.motherName : ''}">
+          </div>
+          <div class="mb-3">
+            <label for="dob" class="form-label">Date of Birth (dd/MM/yyyy)</label>
+            <input type="date" id="dob" name="dob" class="form-control" required placeholder="Enter Date of Birth" th:value="${student != null ? student.dob : ''}">
+          </div>
+          <div class="mb-3">
+            <label for="contactNo" class="form-label">Contact Number</label>
+            <input type="text" id="contactNo" name="contactNo" class="form-control" required placeholder="Enter Contact Number" th:value="${student != null ? student.contactNo : ''}">
+          </div>
+          <div class="mb-3">
+            <label for="sessionSelect" class="form-label">Session : </label>
+            <select class="form-select" id="sessionSelect" name="sessionSelect">
+              <option>-- Select Session --</option>
+              <option th:each="ssn : ${SessionList}" th:value="${ssn.sessionName()}" th:text="${ssn.sessionName()}" th:selected="${student != null && student.session == ssn.sessionName()}"></option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="standardSelect" class="form-label">Standard : </label>
+            <select class="form-select" id="standardSelect" name="standardSelect">
+              <option>-- Select Standard --</option>
+              <option th:each="standard : ${StandardList}" th:value="${standard.standard()}" th:text="${standard.standard()}" th:selected="${student != null && student.standard == standard.standard()}"></option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="sectionSelect" class="form-label">Section : </label>
+            <select class="form-select" id="sectionSelect" name="sectionSelect">
+              <option>-- Select Section --</option>
+              <option th:each="section : ${SectionList}" th:value="${section.section()}" th:text="${section.section()}" th:selected="${student != null && student.section == section.section()}"></option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="feesAmount" class="form-label">Tution Fees Amount</label>
+            <input class="form-control" type="number" step="0.01" id="feesAmount" name="feesAmount" required placeholder="Enter Fees Amount" th:value="${student != null ? student.feesAmount : ''}">
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-custom" th:text="${student != null ? 'Update Student' : 'Add Student'}">Add Student</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="container">
+<!--<div class="container">
   <div class="form-container">
     <h2>Add Student</h2>
     <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
@@ -199,9 +199,46 @@
       <button type="submit">Add Student</button>
     </form>
   </div>
-</div>
-<footer>
-  <p>&copy; 2024 FeeEase. All Rights Reserved.</p>
-</footer>
+</div> -->
+
+<!-- Footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script>
+  function validateStudentData() {
+    let studentName = document.getElementById("studentName").value.trim();
+    let fatherName = document.getElementById("fatherName").value.trim();
+    let motherName = document.getElementById("motherName").value.trim();
+    let dob = document.getElementById("dob").value;
+    let contactNo = document.getElementById("contactNo").value.trim();
+    let sessionSelect = document.getElementById("sessionSelect").value;
+    let standardSelect = document.getElementById("standardSelect").value;
+    let sectionSelect = document.getElementById("sectionSelect").value;
+    let feesAmount = document.getElementById("feesAmount").value.trim();
+
+    let errorMessage = "";
+    let textPattern = /^[A-Za-z .]+$/;
+
+    if (studentName === "" || !textPattern.test(studentName)) errorMessage += "Student Name is required and should contain only letters, spaces, and periods.\n";
+    if (fatherName === "" || !textPattern.test(fatherName)) errorMessage += "Father's Name is required and should contain only letters, spaces, and periods.\n";
+    if (motherName === "" || !textPattern.test(motherName)) errorMessage += "Mother's Name is required and should contain only letters, spaces, and periods.\n";
+    if (dob === "") errorMessage += "Date of Birth is required.\n";
+
+    let contactPattern = /^([0-9\-]{10,15})(,\s*[0-9\-]{10,15})*$/;
+    if (!contactPattern.test(contactNo)) errorMessage += "Enter valid contact numbers (comma-separated, 10-15 digits, may contain '-').\n";
+
+    if (sessionSelect === "-- Select Session --") errorMessage += "Please select a valid session.\n";
+    if (standardSelect === "-- Select Standard --") errorMessage += "Please select a valid standard.\n";
+    if (sectionSelect === "-- Select Section --") errorMessage += "Please select a valid section.\n";
+
+    let feesPattern = /^[0-9]+(\.[0-9]{1,2})?$/;
+    if (feesAmount === "" || !feesPattern.test(feesAmount)) errorMessage += "Fees Amount is required and must be a valid number with up to two decimal places.\n";
+
+    if (errorMessage !== "") {
+        alert(errorMessage);
+        return false;
+    }
+    return true;
+  }
+</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.softmania.feeease.service;
 
+import com.softmania.feeease.dto.Section;
 import com.softmania.feeease.dto.Session;
 import com.softmania.feeease.dto.Standard;
 import com.softmania.feeease.dto.StudentSummary;
@@ -82,5 +83,9 @@ public class StudentsService {
 
     public List<Students> getStudentsBySessionAndStandard(String session, String standard) {
         return repo.findBySessionAndStandard(session, standard);
+    }
+
+    public List<Section> getAllSections(int schoolId) {
+        return repo.getAllSections(schoolId);
     }
 }
