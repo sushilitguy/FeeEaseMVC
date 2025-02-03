@@ -1,5 +1,6 @@
 package com.softmania.feeease.repo;
 
+import com.softmania.feeease.dto.Section;
 import com.softmania.feeease.dto.Session;
 import com.softmania.feeease.dto.Standard;
 import com.softmania.feeease.model.Students;
@@ -35,4 +36,7 @@ public interface StudentsRepo extends JpaRepository<Students, Integer> {
     List<Standard> getAllStandards(@Param("schoolId") int schoolId);
 
     List<Students> findBySessionAndStandard(String session, String standard);
+
+    @Query("SELECT DISTINCT new com.softmania.feeease.dto.Section(s.section) from Students s WHERE s.school.id = :schoolId")
+    List<Section> getAllSections(@Param("schoolId") int schoolId);
 }
