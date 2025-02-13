@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-//@RequestMapping("/fee_ease")
 public class HomeController {
     @Autowired
     private AuthenticationManager authManager;

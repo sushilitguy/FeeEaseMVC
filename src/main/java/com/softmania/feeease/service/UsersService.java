@@ -14,10 +14,7 @@ import java.util.List;
 public class UsersService {
     @Autowired
     private UsersRepo repo;
-//    @Autowired
-//    private AuthenticationManager authManager;
-//    @Autowired
-//    private JWTService jwtService;
+
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public List<Users> getUsers() {
