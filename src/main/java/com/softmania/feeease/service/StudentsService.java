@@ -1,11 +1,9 @@
 package com.softmania.feeease.service;
 
 import com.softmania.feeease.dto.Section;
-import com.softmania.feeease.dto.Session;
 import com.softmania.feeease.dto.Standard;
 import com.softmania.feeease.dto.StudentSummary;
 import com.softmania.feeease.model.Students;
-import com.softmania.feeease.model.Users;
 import com.softmania.feeease.repo.StudentsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,16 +71,12 @@ public class StudentsService {
         return new StudentSummary(totalStudents, activeStudents, inactiveStudents);
     }
 
-    public List<Session> getAllSession(int schoolId) {
-        return repo.getAllSession(schoolId);
-    }
-
     public List<Standard> getAllStandards(int schoolId) {
         return repo.getAllStandards(schoolId);
     }
 
-    public List<Students> getStudentsBySessionAndStandard(String session, String standard) {
-        return repo.findBySessionAndStandard(session, standard);
+    public List<Students> getStudentsBySessionIdAndStandard(int sessionId, String standard) {
+        return repo.findBySessionIdAndStandard(sessionId, standard);
     }
 
     public List<Section> getAllSections(int schoolId) {

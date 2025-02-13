@@ -3,10 +3,9 @@ package com.softmania.feeease.controller;
 import com.softmania.feeease.model.School;
 import com.softmania.feeease.model.Students;
 import com.softmania.feeease.model.UserData;
-import com.softmania.feeease.model.Users;
+import com.softmania.feeease.service.AcademicSessionService;
 import com.softmania.feeease.service.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,13 +19,15 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentsService service;
+    @Autowired
+    private AcademicSessionService sessionService;
 
     @RequestMapping(value = "/students", method = RequestMethod.GET)
     public String viewStudents(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        model.addAttribute("SessionList", service.getAllSession(school.getId()));
+        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
         model.addAttribute("StandardList", service.getAllStandards(school.getId()));
         return "students";
     }
@@ -52,7 +53,7 @@ public class StudentController {
     public String viewAddStudentForm(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", service.getAllSession(school.getId()));
+        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
         model.addAttribute("StandardList", service.getAllStandards(school.getId()));
         model.addAttribute("SectionList", service.getAllSections(school.getId()));
         return "studentForm";
@@ -62,7 +63,7 @@ public class StudentController {
     public String viewEditStudentForm(Authentication auth, Model model, @PathVariable int studentId) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", service.getAllSession(school.getId()));
+        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
         model.addAttribute("StandardList", service.getAllStandards(school.getId()));
         model.addAttribute("SectionList", service.getAllSections(school.getId()));
         model.addAttribute("student", service.getStudentById(studentId));
@@ -88,7 +89,7 @@ public class StudentController {
         student.setMotherName(motherName);
         student.setDob(dob);
         student.setContactNo(contactNo);
-        student.setSession(session);
+        student.setSession(sessionService.getAcademicSessionBySession(session));
         student.setStandard(standard);
         student.setSection(section);
         student.setFeesAmount(feesAmount);
@@ -103,7 +104,7 @@ public class StudentController {
         }
 
         model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", service.getAllSession(school.getId()));
+        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
         model.addAttribute("StandardList", service.getAllStandards(school.getId()));
         model.addAttribute("SectionList", service.getAllSections(school.getId()));
         return "studentForm";
@@ -130,7 +131,7 @@ public class StudentController {
             student.setMotherName(motherName);
             student.setDob(dob);
             student.setContactNo(contactNo);
-            student.setSession(session);
+            student.setSession(sessionService.getAcademicSessionBySession(session));
             student.setStandard(standard);
             student.setSection(section);
             student.setFeesAmount(feesAmount);
@@ -149,7 +150,7 @@ public class StudentController {
 
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        model.addAttribute("SessionList", service.getAllSession(school.getId()));
+        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
         model.addAttribute("StandardList", service.getAllStandards(school.getId()));
 
         return "students";
@@ -158,6 +159,6 @@ public class StudentController {
     @RequestMapping(value = "/students/filter", method = RequestMethod.GET)
     @ResponseBody
     public List<Students> filterStudents(@RequestParam String session, @RequestParam String standard) {
-        return service.getStudentsBySessionAndStandard(session, standard);
+        return service.getStudentsBySessionIdAndStandard(sessionService.getAcademicSessionBySession(session).getId(), standard);
     }
 }

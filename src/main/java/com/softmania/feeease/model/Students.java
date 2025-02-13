@@ -25,7 +25,9 @@ public class Students {
 	private String contactNo;
 	private String standard;
 	private String section;
-	private String session;
+	@ManyToOne
+	@JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false)
+	private AcademicSession session;
 	private double feesAmount;
 	private boolean isEnabled;
 	@ManyToOne
