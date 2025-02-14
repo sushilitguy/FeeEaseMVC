@@ -155,13 +155,6 @@
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
-  function confirmReset(event) {
-      var confirmed = confirm("Are you sure you wish to reset password?");
-
-      if(!confirmed) {
-          event.preventDefault();
-      }
-  }
 
   function confirmEnableDisable(button, event) {
       var message = button.getAttribute('data-confirm-message');
@@ -180,61 +173,92 @@
     $("#studentTableBody").empty(); // Clear previous results
 
     $.ajax({
-        url: "/fee_ease/students/filter",
-        type: "GET",
-        data: { session: session, standard: standard },
-        success: function (data) {
-    var tableBody = $("#studentTableBody");
-    var idx = 1;
-    var role = "[[${Role}]]"; // Passing Thymeleaf variable to JavaScript
-
-    data.forEach(function (student) {
-        var row = "<tr>" +
-            "<td>" + idx + "</td>" +
-            "<td>" + student.name + "</td>" +
-            "<td>" + student.standard + "</td>" +
-            "<td>" + student.section + "</td>" +
-            "<td>" + student.dob + "</td>" +
-            "<td>" + student.session + "</td>";
-
-        // If user is Admin, add action buttons
-        if (role === "Admin") {
-            row += "<td>" +
+      url: "/fee_ease/students/filter",
+      type: "GET",
+      data: { session: session, standard: standard },
+      success: function (data) {
+        var tableBody = $("#studentTableBody");
+        var idx = 1;
+        var role = "[[${Role}]]"; // Passing Thymeleaf variable to JavaScript
+        data.forEach(function (student) {
+            var row = "<tr>" +
+              "<td>" + idx + "</td>" +
+              "<td>" + student.name + "</td>" +
+              "<td>" + student.standard + "</td>" +
+              "<td>" + student.section + "</td>" +
+              "<td>" + student.dob + "</td>" +
+              "<td>" + student.session.sessionName + "</td>" +
+              "<td>" +
                 "<div class='d-flex gap-2'>"+
                 "<form action='/fee_ease/students/view/" + student.id + "' method='get' style='display:inline;'>" +
                 "<button class='btn btn-primary'>View</button>" +
-                "</form>" +
-                "<form action='/fee_ease/students/edit/" + student.id + "' method='get' style='display:inline;'>" +
+                "</form>";
+            // If user is Admin, show Edit, Enable/Disable buttons
+            if (role === "Admin") {
+              row +=  "<form action='/fee_ease/students/edit/" + student.id + "' method='get' style='display:inline;'>" +
                 "<button type='submit' class='btn btn-warning'>Edit</button>" +
                 "</form>" +
-                "<form action='/fee_ease/" + (student.enabled ? "/students/disable" : "/students/enable") + "' method='post' style='display:inline;'>" +
-                "<input type='hidden' name='studentId' value='" + student.id + "'/>" +
-                "<button type='submit' class='" + (student.enabled ? "btn btn-danger" : "btn btn-success") + "'>" +
+                "<form action='/fee_ease/" + (student.enabled ? "students/disable" : "students/enable") + "' method='post' style='display:inline;'>" +
+                "<button type='button' id='enableDisablebtn"+student.id+"' onclick='enableDisableStudent(event, "+student.id+")' class='" + (student.enabled ? "btn btn-danger" : "btn btn-success") + "'>" +
                 (student.enabled ? "Disable" : "Enable") +
                 "</button>" +
-                "</form>" +
-                "</div>"+
-                "</td>";
-        }
-
-        row += "</tr>";
-
-        tableBody.append(row);
-        idx++;
+                "</form>";
+            }
+            row += "</div></td></tr>";
+            tableBody.append(row);
+            idx++;
+        });
+      },
+      error: function() {
+        alert("Error fetching student data. Please try again.");
+      },
+      complete: function() {
+        setTimeout(function () {
+          // Hide Spinner after data is loaded
+          $("#studentTable").show(); // ✅ Fixed syntax
+          $("#loadingSpinner").hide();
+        }, 500);
+      }
     });
-},
-        error: function() {
-            alert("Error fetching student data. Please try again.");
+  }
+
+  function enableDisableStudent(event,id) {
+    event.preventDefault();
+    var button = $("#enableDisablebtn"+id);
+    var form = button.closest("form");
+    var actionUrl = form.attr("action");
+    var confirmMsg;
+    if(actionUrl === "/fee_ease/students/enable") {
+      confirmMsg = "Are you Sure you want to Enable Student?";
+    } else {
+      confirmMsg = "Are you Sure you want to Disable Student?";
+    }
+    var confirmed = confirm(confirmMsg);
+    if(confirmed) {
+      $.ajax({
+        url: actionUrl,
+        type: "POST",
+        data: { studentId: id },
+        success: function (response) {
+          if(response != null) {
+            // Toggle button state
+            if (button.hasClass("btn-danger")) {
+              button.removeClass("btn-danger").addClass("btn-success").text("Enable");
+              form.attr("action", "/fee_ease/students/enable");
+            } else {
+              button.removeClass("btn-success").addClass("btn-danger").text("Disable");
+              form.attr("action", "/fee_ease/students/disable");
+            }
+          } else {
+            alert("Error updating student status.");
+          }
         },
-        complete: function() {
-          setTimeout(function () {
-            // Hide Spinner after data is loaded
-            $("#studentTable").show(); // ✅ Fixed syntax
-            $("#loadingSpinner").hide();
-            }, 500);
+        error: function () {
+          alert("Error updating student status.");
         }
-    });
-}
+      });
+    }
+  }
 </script>
 </body>
 </html>
