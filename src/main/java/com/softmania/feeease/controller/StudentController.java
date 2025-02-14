@@ -161,4 +161,16 @@ public class StudentController {
     public List<Students> filterStudents(@RequestParam String session, @RequestParam String standard) {
         return service.getStudentsBySessionIdAndStandard(sessionService.getAcademicSessionBySession(session).getId(), standard);
     }
+
+    @RequestMapping(value = "/students/enable", method = RequestMethod.POST)
+    @ResponseBody
+    public Students enableStudent(Authentication auth, Model model, @RequestParam int studentId) {
+        return service.enableStudent(studentId);
+    }
+
+    @RequestMapping(value = "/students/disable", method = RequestMethod.POST)
+    @ResponseBody
+    public Students disableStudent(Authentication auth, Model model, @RequestParam int studentId) {
+        return service.disableStudent(studentId);
+    }
 }
