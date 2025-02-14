@@ -155,16 +155,6 @@
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
-
-  function confirmEnableDisable(button, event) {
-      var message = button.getAttribute('data-confirm-message');
-      var confirmed = confirm(message);
-
-      if (!confirmed) {
-          event.preventDefault(); // Prevent form submission if not confirmed
-      }
-  }
-
   function filterStudents() {
     var session = $("#sessionSelect").val();
     var standard = $("#standardSelect").val();
