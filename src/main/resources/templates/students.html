@@ -148,6 +148,31 @@
         </table>
       </div>
 
+      <!-- Modal Dialog -->
+      <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="studentModalLabel">Student Details</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <p><strong>Name:</strong> <span id="modal-student-name"></span></p>
+              <p><strong>Father's Name:</strong> <span id="modal-student-father-name"></span></p>
+              <p><strong>Mother's Name:</strong> <span id="modal-student-mother-name"></span></p>
+              <p><strong>Date Of Birth:</strong> <span id="modal-student-dob"></span></p>
+              <p><strong>Contact No:</strong> <span id="modal-student-contact"></span></p>
+              <p><strong>Standard:</strong> <span id="modal-student-standard"></span></p>
+              <p><strong>Section:</strong> <span id="modal-student-section"></span></p>
+              <p><strong>Session:</strong> <span id="modal-student-session"></span></p>
+              <p><strong>Tuition Fees Amount:</strong> <span id="modal-student-fees"></span></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -155,6 +180,29 @@
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
+  $(document).on("click", ".view-btn", function () {
+    var studentName = $(this).attr("data-name");
+    var fatherName = $(this).attr("data-father-name");
+    var motherName = $(this).attr("data-mother-name");
+    var dob = $(this).attr("data-dob");
+    var contactNo = $(this).attr("data-contact");
+    var studentStandard = $(this).attr("data-standard");
+    var studentSection = $(this).attr("data-section");
+    var session = $(this).attr("data-session");
+    var fees = $(this).attr("data-fees");
+
+    // Populate modal fields
+    $("#modal-student-name").text(studentName);
+    $("#modal-student-father-name").text(fatherName);
+    $("#modal-student-mother-name").text(motherName);
+    $("#modal-student-dob").text(dob);
+    $("#modal-student-contact").text(contactNo);
+    $("#modal-student-standard").text(studentStandard);
+    $("#modal-student-section").text(studentSection);
+    $("#modal-student-session").text(session);
+    $("#modal-student-fees").text(fees);
+  });
+
   function filterStudents() {
     var session = $("#sessionSelect").val();
     var standard = $("#standardSelect").val();
@@ -180,9 +228,15 @@
               "<td>" + student.session.sessionName + "</td>" +
               "<td>" +
                 "<div class='d-flex gap-2'>"+
-                "<form action='/fee_ease/students/view/" + student.id + "' method='get' style='display:inline;'>" +
-                "<button class='btn btn-primary'>View</button>" +
-                "</form>";
+                "<button class='btn btn-primary view-btn' data-bs-toggle='modal' data-bs-target='#studentModal' data-name='" + student.name +"' "+
+                                "data-father-name='" + student.fatherName + "' "+
+                                "data-mother-name='" + student.motherName + "' "+
+                                "data-dob='" + student.dob + "' "+
+                                "data-contact='" + student.contactNo + "' "+
+                                "data-standard='" + student.standard + "' "+
+                                "data-section='" + student.section + "' "+
+                                "data-session='" + student.session.sessionName + "' "+
+                                "data-fees='" + student.feesAmount + "'>View</button>";
             // If user is Admin, show Edit, Enable/Disable buttons
             if (role === "Admin") {
               row +=  "<form action='/fee_ease/students/edit/" + student.id + "' method='get' style='display:inline;'>" +
