@@ -26,7 +26,8 @@ class AcademicSessionController {
         List<Session> allSessions = service.getAllSessions(school.getId());
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("sessions", allSessions);
-        return "AcademicSession";
+        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        return "session";
     }
 
     @PostMapping

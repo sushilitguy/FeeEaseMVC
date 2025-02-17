@@ -1,4 +1,4 @@
 package com.softmania.feeease.dto;
 
-public record Session(String sessionName) {
+public record Session(int id, String sessionName, String sessionType) {
 }

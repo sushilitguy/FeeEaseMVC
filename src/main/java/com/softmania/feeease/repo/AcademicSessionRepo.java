@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface AcademicSessionRepo extends JpaRepository<AcademicSession, Integer> {
     AcademicSession getAcademicSessionBySessionName(String session);
 
-    @Query("SELECT new com.softmania.feeease.dto.Session(s.sessionName) FROM AcademicSession s " +
+    @Query("SELECT new com.softmania.feeease.dto.Session(s.id, s.sessionName, CAST(s.sessionType AS string)) FROM AcademicSession s " +
             "WHERE s.school.id = :schoolId")
     List<Session> findBySchoolId(int schoolId);
 
