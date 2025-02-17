@@ -2,6 +2,7 @@ package com.softmania.feeease.service;
 
 import com.softmania.feeease.dto.Session;
 import com.softmania.feeease.model.AcademicSession;
+import com.softmania.feeease.model.SessionType;
 import com.softmania.feeease.repo.AcademicSessionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,5 +41,9 @@ public class AcademicSessionService {
 
     public AcademicSession getAcademicSessionBySession(String session) {
         return repository.getAcademicSessionBySessionName(session);
+    }
+
+    public AcademicSession getCurrentAcademicSession(int schoolId) {
+        return repository.findBySessionTypeAndSchoolId(SessionType.CURRENT, schoolId).orElse(new AcademicSession());
     }
 }
