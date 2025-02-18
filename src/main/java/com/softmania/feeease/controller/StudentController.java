@@ -89,7 +89,7 @@ public class StudentController {
         student.setMotherName(motherName);
         student.setDob(dob);
         student.setContactNo(contactNo);
-        student.setSession(sessionService.getAcademicSessionBySession(session));
+        student.setSession(sessionService.getAcademicSessionBySessionName(session));
         student.setStandard(standard);
         student.setSection(section);
         student.setFeesAmount(feesAmount);
@@ -131,7 +131,7 @@ public class StudentController {
             student.setMotherName(motherName);
             student.setDob(dob);
             student.setContactNo(contactNo);
-            student.setSession(sessionService.getAcademicSessionBySession(session));
+            student.setSession(sessionService.getAcademicSessionBySessionName(session));
             student.setStandard(standard);
             student.setSection(section);
             student.setFeesAmount(feesAmount);
@@ -159,7 +159,7 @@ public class StudentController {
     @RequestMapping(value = "/students/filter", method = RequestMethod.GET)
     @ResponseBody
     public List<Students> filterStudents(@RequestParam String session, @RequestParam String standard) {
-        return service.getStudentsBySessionIdAndStandard(sessionService.getAcademicSessionBySession(session).getId(), standard);
+        return service.getStudentsBySessionIdAndStandard(sessionService.getAcademicSessionBySessionName(session).getId(), standard);
     }
 
     @RequestMapping(value = "/students/enable", method = RequestMethod.POST)

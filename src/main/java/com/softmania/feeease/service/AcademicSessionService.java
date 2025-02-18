@@ -24,23 +24,50 @@ public class AcademicSessionService {
     }
 
     public AcademicSession createSession(AcademicSession session) {
+        if(session.getSessionType().equals(SessionType.CURRENT)) {
+            AcademicSession currentSession = getAcademicSessionBySessionType(SessionType.CURRENT);
+            if(currentSession != null) {
+                currentSession.setSessionType(SessionType.CLOSED);
+                repository.save(currentSession);
+            }
+        }
+        if(session.getSessionType().equals(SessionType.UPCOMING)) {
+            AcademicSession upcomingSession = getAcademicSessionBySessionType(SessionType.UPCOMING);
+            if(upcomingSession != null) {
+                upcomingSession.setSessionType(SessionType.CLOSED);
+                repository.save(upcomingSession);
+            }
+        }
         return repository.save(session);
     }
 
-    public AcademicSession updateSession(int id, AcademicSession session) {
-        if (repository.existsById(id)) {
-            session.setId(id);
+    public AcademicSession updateSession(AcademicSession session) {
+        if (repository.existsById(session.getId())) {
+            if(session.getSessionType().equals(SessionType.CURRENT)) {
+                AcademicSession currentSession = getAcademicSessionBySessionType(SessionType.CURRENT);
+                if(currentSession != null) {
+                    currentSession.setSessionType(SessionType.CLOSED);
+                    repository.save(currentSession);
+                }
+            }
+            if(session.getSessionType().equals(SessionType.UPCOMING)) {
+                AcademicSession upcomingSession = getAcademicSessionBySessionType(SessionType.UPCOMING);
+                if(upcomingSession != null) {
+                    upcomingSession.setSessionType(SessionType.CLOSED);
+                    repository.save(upcomingSession);
+                }
+            }
             return repository.save(session);
         }
         return null;
     }
 
-    public void deleteSession(int id) {
-        repository.deleteById(id);
+    public AcademicSession getAcademicSessionBySessionType(SessionType sessionType) {
+        return repository.getAcademicSessionBySessionType(sessionType);
     }
 
-    public AcademicSession getAcademicSessionBySession(String session) {
-        return repository.getAcademicSessionBySessionName(session);
+    public AcademicSession getAcademicSessionBySessionName(String sessionName) {
+        return repository.findBySessionName(sessionName);
     }
 
     public AcademicSession getCurrentAcademicSession(int schoolId) {

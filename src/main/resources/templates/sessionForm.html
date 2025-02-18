@@ -52,6 +52,22 @@
             background-color: #056a6e !important;
             border-color: #056a6e !important;
         }
+        .form-container {
+          max-width: 600px;
+          width: 100%;
+          padding: 30px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          margin:25px auto;
+        }
+        .btn-custom {
+          background-color: #068388;
+          color: white;
+        }
+        .btn-custom:hover {
+          background-color: #056a6e;
+        }
     </style>
 </head>
 <body>
@@ -84,7 +100,7 @@
         <div class="container-fluid">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link custom-tab" aria-current="page" href="#">Sessions</a>
+                    <a class="nav-link custom-tab" aria-current="page" href="/fee_ease/sessions">Sessions</a>
                 </li>
                 <li class="nav-item" th:if="${Role == 'Admin'}">
                     <a class="nav-link active" aria-current="page" href="#">Add/Edit Sessions</a>
@@ -95,6 +111,7 @@
                 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
                 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
                 <form id="addUserForm" method="post" th:action="${sessionData != null ? '/fee_ease/sessions/update' : '/fee_ease/sessions/add'}" onsubmit="return validatePasswords()">
+                    <input type="hidden" name="_method" th:value="${sessionData != null ? 'put' : 'post'}" />
                     <input type="hidden" name="sessionId" th:value="${sessionData != null ? sessionData.id : ''}" />
                     <div class="mb-3">
                         <label for="sessionName" class="form-label">Session Name</label>
@@ -112,7 +129,7 @@
                     </div>
 
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-custom" th:text="${user != null ? 'Update Session' : 'Add Session'}">Add Session</button>
+                        <button type="submit" class="btn btn-custom" th:text="${sessionData != null ? 'Update Session' : 'Add Session'}">Add Session</button>
                     </div>
                 </form>
             </div>

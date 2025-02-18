@@ -136,7 +136,7 @@
             <label for="sessionSelect" class="form-label">Session : </label>
             <select class="form-select" id="sessionSelect" name="sessionSelect">
               <option>-- Select Session --</option>
-              <option th:each="ssn : ${SessionList}" th:value="${ssn.sessionName()}" th:text="${ssn.sessionName()}" th:selected="${student != null && student.session == ssn.sessionName()}"></option>
+              <option th:each="ssn : ${SessionList}" th:value="${ssn.sessionName()}" th:text="${ssn.sessionName()}" th:selected="${student != null && student.session.sessionName == ssn.sessionName()}"></option>
             </select>
           </div>
           <div class="mb-3">
