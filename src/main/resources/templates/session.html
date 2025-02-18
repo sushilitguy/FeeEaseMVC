@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users - FeeEase</title>
+    <title>Session Management - FeeEase</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <style>
@@ -44,10 +44,10 @@
           padding: 20px;
           overflow-y: auto;
         }
-        .custom-add-user-tab {
+        .custom-tab {
             color: #068388 !important;
         }
-        .custom-add-user-tab:hover {
+        .custom-tab:hover {
             color: #fff !important;
             background-color: #056a6e !important;
             border-color: #056a6e !important;
@@ -64,11 +64,11 @@
     <div class="menu-section">
         <nav class="nav flex-column">
             <a class="nav-link" href="/fee_ease/dashboard">Dashboard</a>
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">School Management</a>
+            <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">School Management</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="/fee_ease/sessions">Session Management</a></li>
+                <li><a class="dropdown-item active" href="#">Session Management</a></li>
             </ul>
-            <a class="nav-link active" href="#">User Management</a>
+            <a class="nav-link" href="/fee_ease/users">User Management</a>
             <a class="nav-link" href="/fee_ease/students">Student Management</a>
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Fees Management</a>
             <ul class="dropdown-menu">
@@ -84,50 +84,31 @@
         <div class="container-fluid">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Users</a>
+                    <a class="nav-link active" aria-current="page" href="#">Sessions</a>
                 </li>
                 <li class="nav-item" th:if="${Role == 'Admin'}">
-                    <a class="nav-link custom-add-user-tab" href="/fee_ease/users/add">Add/Edit User</a>
+                    <a class="nav-link custom-tab" aria-current="page" href="/fee_ease/sessions/add">Add/Edit Sessions</a>
                 </li>
             </ul>
             <table class="table table-striped" style="margin-top: 25px;">
                 <thead>
                 <tr>
-                    <th>S. No.</th>
-                    <th>Username</th>
-                    <th>Role</th>
-                    <th>School Name</th>
+                    <th>Session Name</th>
+                    <th>Session Type</th>
                     <th th:if="${Role == 'Admin'}">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user, iterStat : ${users}">
+                <tr th:each="sessionData, iterStat : ${sessions}">
                     <td th:text="${iterStat.index + 1}"></td>
-                    <td th:text="${user.userName}"></td>
-                    <td th:text="${user.role}"></td>
-                    <td th:text="${user.getSchool().getName()}"></td>
+                    <td th:text="${sessionData.sessionName}"></td>
+                    <td th:text="${sessionData.sessionType}"></td>
 
                     <td th:if="${Role == 'Admin'}">
                         <div class="d-flex gap-2">
-                        <form th:action="@{/fee_ease/users/edit/{id}(id=${user.id})}" method="get">
-                            <button type="submit" class="btn btn-secondary">Edit</button>
-                        </form>
-
-                        <form th:action="${user.enabled ? '/fee_ease/users/disable' : '/fee_ease/users/enable'}" method="post">
-                            <input type="hidden" th:name="userId" th:value="${user.id}" />
-                            <button
-                                    type="submit"
-                                    th:text="${user.enabled ? 'Disable' : 'Enable'}"
-                                    th:class="${user.enabled ? 'btn btn-danger' : 'btn btn-success'}"
-                                    th:attr="data-confirm-message=${user.enabled ? 'Are you sure you want to disable this user?' : 'Are you sure you want to enable this user?'}"
-                                    onclick="confirmEnableDisable(this, event)">
-                            </button>
-                        </form>
-
-                        <form th:action="@{/fee_ease/users/resetPassword}" method="post">
-                            <input type="hidden" th:name="userId" th:value="${user.id}" />
-                            <button type="submit" class="btn btn-warning" onclick="confirmReset(event)">Reset Password</button>
-                        </form>
+                            <form th:action="@{/fee_ease/sessions/update/{id}(id=${sessionData.id})}" method="get">
+                                <button type="submit" class="btn btn-secondary">Edit</button>
+                            </form>
                         </div>
                     </td>
                 </tr>
@@ -141,7 +122,7 @@
 <div th:replace="fragments/footer :: footer"></div>
 <script>
     function confirmReset(event) {
-        var confirmed = confirm("Are you sure you wish to reset password?");
+        var confirmed = confirm("Are you sure you wish Delete Session record?");
 
         if(!confirmed) {
             event.preventDefault();

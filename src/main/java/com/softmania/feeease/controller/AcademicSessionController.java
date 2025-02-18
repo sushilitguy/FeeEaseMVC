@@ -3,6 +3,7 @@ package com.softmania.feeease.controller;
 import com.softmania.feeease.dto.Session;
 import com.softmania.feeease.model.AcademicSession;
 import com.softmania.feeease.model.School;
+import com.softmania.feeease.model.SessionType;
 import com.softmania.feeease.model.UserData;
 import com.softmania.feeease.service.AcademicSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +27,67 @@ class AcademicSessionController {
         List<Session> allSessions = service.getAllSessions(school.getId());
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("sessions", allSessions);
-        return "AcademicSession";
+        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        return "session";
     }
 
-    @PostMapping
-    @ResponseBody
-    public AcademicSession createSession(@RequestBody AcademicSession session) {
-        return service.createSession(session);
+    @GetMapping("/add")
+    public String showAddUserForm(Authentication auth, Model model) {
+        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        model.addAttribute("SchoolName",school.getName().toUpperCase());
+        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        return "sessionForm";
     }
 
-    @PutMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<AcademicSession> updateSession(@PathVariable int id, @RequestBody AcademicSession session) {
-        AcademicSession updatedSession = service.updateSession(id, session);
-        return updatedSession != null ? ResponseEntity.ok(updatedSession) : ResponseEntity.notFound().build();
+    @GetMapping("/update/{sessionId}")
+    public String editUserForm(Authentication auth, Model model, @PathVariable int sessionId) {
+        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        model.addAttribute("SchoolName",school.getName().toUpperCase());
+        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        AcademicSession academicSession = service.getSessionById(sessionId).orElse(null);
+        if(academicSession != null) {
+            Session sessionData = new Session(academicSession.getId(), academicSession.getSessionName(), academicSession.getSessionType().toString());
+            model.addAttribute("sessionData", sessionData);
+        }
+        return "sessionForm";
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<Void> deleteSession(@PathVariable int id) {
-        service.deleteSession(id);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/add")
+    public String createSession(Authentication auth, Model model, @RequestParam("sessionName") String sessionName, @RequestParam("sessionType") String sessionType) {
+        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        AcademicSession session = new AcademicSession();
+        session.setSessionName(sessionName);
+        session.setSessionType(SessionType.valueOf(sessionType.toUpperCase()));
+        session.setSchool(school);
+        AcademicSession savedSession = service.createSession(session);
+        if(savedSession != null) {
+            model.addAttribute("successMessage", "Session Added Successfully");
+        } else {
+            model.addAttribute("errorMessage","Error while adding session, Please try again");
+        }
+        model.addAttribute("SchoolName",school.getName().toUpperCase());
+        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        return "sessionForm";
+    }
+
+    @PostMapping("/update")
+    public String updateSession(Authentication auth, Model model, @RequestParam("sessionId") int sessionId, @RequestParam("sessionName") String sessionName, @RequestParam("sessionType") String sessionType) {
+        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        AcademicSession session = service.getSessionById(sessionId).orElse(null);
+        if(session != null) {
+            session.setSessionName(sessionName);
+            session.setSessionType(SessionType.valueOf(sessionType.toUpperCase()));
+            AcademicSession savedSession = service.updateSession(session);
+            if (savedSession != null) {
+                model.addAttribute("successMessage", "Session Added Successfully");
+            } else {
+                model.addAttribute("errorMessage", "Error while adding session, Please try again");
+            }
+        }
+        model.addAttribute("SchoolName",school.getName().toUpperCase());
+        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        List<Session> allSessions = service.getAllSessions(school.getId());
+        model.addAttribute("sessions", allSessions);
+        return "session";
     }
 }
