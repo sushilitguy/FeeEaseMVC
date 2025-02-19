@@ -2,6 +2,8 @@ package com.softmania.feeease.service;
 
 import com.softmania.feeease.model.*;
 import com.softmania.feeease.repo.FeesRepo;
+import com.softmania.feeease.service.StudentsService;
+import com.softmania.feeease.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +48,7 @@ public class FeesService {
     public Fees addFees(Fees recievedFees) throws Exception {
         Students currentStudent = studentService.getStudentById(recievedFees.getStudent().getId());
         FeeType currentFeeType = feeTypeService.getFeeTypeById(recievedFees.getFeeType().getId());
+//        Users currentUser = userService.getUserById(recievedFees.getAddedBy().getId());
         Users currentUser = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserData) {

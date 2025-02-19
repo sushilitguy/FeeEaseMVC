@@ -23,11 +23,9 @@ public class Students {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dob;
 	private String contactNo;
-	private String standard;
-	private String section;
-	@ManyToOne
-	@JoinColumn(name = "session_id", referencedColumnName = "id", nullable = false)
-	private AcademicSession session;
+	private String schoolClass;
+	private String classSection;
+	private String session;
 	private double feesAmount;
 	private boolean isEnabled;
 	@ManyToOne
