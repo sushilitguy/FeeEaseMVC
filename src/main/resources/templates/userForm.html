@@ -53,10 +53,10 @@
         border-color: #056a6e !important;
     }
     .form-container {
-      max-width: 400px;
+      max-width: 600px;
       width: 100%;
       padding: 30px;
-      background-color: #fff;
+      background-color: #f9f9f9;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       margin:25px auto;
@@ -71,48 +71,12 @@
   </style>
 </head>
 <body>
-<!-- Header (Navbar) -->
-<nav class="navbar navbar-expand-lg navbar-light border-bottom">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold text-primary" href="#">
-      <img src="/images/FeeEase.png" alt="FeeEase Logo" width="100" height="64">
-    </a>
-    <div class="d-flex justify-content-center position-absolute w-100" style="left: 50%; transform: translateX(-50%);">
-      <span class="navbar-text fw-bold" style="font-size: 2rem; color:#068388;" th:text="${SchoolName}">Dashboard</span>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="/images/userIcon.png" class="rounded-circle" width="32" height="32">
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="/logout">Logout</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
 
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
-  <div class="menu-section">
-    <nav class="nav flex-column">
-      <a class="nav-link" href="/fee_ease/dashboard">Dashboard</a>
-      <a class="nav-link active" href="#">User Management</a>
-      <a class="nav-link" href="/fee_ease/students">Student Management</a>
-      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Fees Management</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Fee Type</a></li>
-        <li><a class="dropdown-item" href="#">Fees</a></li>
-        <li><a class="dropdown-item" href="#">Reports</a></li>
-      </ul>
-    </nav>
-  </div>
+  <div th:replace="fragments/sidebar :: sidebar('users', '')"></div>
 
   <!-- Content Section -->
   <div class="content-section">
@@ -125,31 +89,6 @@
           <a class="nav-link active" href="#">Add/Edit User</a>
         </li>
       </ul>
-<!--      <div class="form-container">-->
-<!--        <h2 class="text-center mb-4" style="color:#068388">Add User</h2>-->
-<!--        <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>-->
-<!--        <div th:if="${successMessage}" class="success" th:text="${successMessage}"></div>-->
-<!--        <form id="addUserForm" th:action="${user != null ? '/fee_ease/users/update' : '/fee_ease/users/add'}" method="post" onsubmit="return validatePasswords()">-->
-<!--          <input type="hidden" name="userId" th:value="${user != null ? user.id : ''}" />-->
-
-<!--          <label for="username">User Name</label>-->
-<!--          <input type="text" id="username" name="userName" required placeholder="Enter User Name" th:value="${user != null ? user.userName : ''}" />-->
-
-<!--          <label for="role">Role</label>-->
-<!--          <select id="role" name="role" required>-->
-<!--            <option value="Admin" th:selected="${user != null && user.role == 'Admin'}">Admin</option>-->
-<!--            <option value="User" th:selected="${user != null && user.role == 'User'}">User</option>-->
-<!--          </select>-->
-
-<!--          <label for="password" th:if="${user == null}">Password</label>-->
-<!--          <input type="password" id="password" name="password" required placeholder="Enter Password" th:if="${user == null}"/>-->
-
-<!--          <label for="repassword" th:if="${user == null}">Re-Password</label>-->
-<!--          <input type="password" id="repassword" name="repassword" required placeholder="Re-enter Password" th:if="${user == null}"/>-->
-
-<!--          <button type="submit" th:text="${user != null ? 'Update User' : 'Add User'}">Add User</button>-->
-<!--        </form>-->
-<!--      </div>-->
       <div class="form-container">
                 <h2 class="text-center mb-4" style="color:#068388" th:text="${user != null ? 'Edit User Details' : 'Add User'}">Add User</h2>
                 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
@@ -190,22 +129,7 @@
 </div>
 
 <!-- Footer -->
-<footer class="py-3 border-top">
-  <div class="container-fluid d-flex justify-content-between">
-    <div class="col-md-4 d-flex align-items-center">
-      <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-        <img src="/images/FeeEase.png" class="bi" width="30" height="24" alt="FeeEase Logo">
-      </a>
-      <span class="mb-3 mb-md-0 text-body-secondary">© 2025 FeeEase, All Rights Reserved</span>
-    </div>
-    <ul class="nav col-md-4 justify-content-end">
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Dashboard</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">User Management</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Student Management</a></li>
-      <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Fee Management</a></li>
-    </ul>
-  </div>
-</footer>
+<div th:replace="fragments/footer :: footer"></div>
 
 <script>
   function validatePasswords() {
