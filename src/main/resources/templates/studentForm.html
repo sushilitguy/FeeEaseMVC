@@ -74,11 +74,9 @@
 <body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
-
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
   <div th:replace="fragments/sidebar :: sidebar('students', '')"></div>
-
   <!-- Content Section -->
   <div class="content-section">
     <div class="container-fluid">
@@ -141,7 +139,6 @@
             <label for="feesAmount" class="form-label">Tution Fees Amount</label>
             <input class="form-control" type="number" step="0.01" id="feesAmount" name="feesAmount" required placeholder="Enter Fees Amount" th:value="${student != null ? student.feesAmount : ''}">
           </div>
-
           <div class="d-grid">
             <button type="submit" class="btn btn-custom" th:text="${student != null ? 'Update Student' : 'Add Student'}">Add Student</button>
           </div>
@@ -150,7 +147,6 @@
     </div>
   </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
@@ -164,25 +160,19 @@
     let standardSelect = document.getElementById("standardSelect").value;
     let sectionSelect = document.getElementById("sectionSelect").value;
     let feesAmount = document.getElementById("feesAmount").value.trim();
-
     let errorMessage = "";
     let textPattern = /^[A-Za-z .]+$/;
-
     if (studentName === "" || !textPattern.test(studentName)) errorMessage += "Student Name is required and should contain only letters, spaces, and periods.\n";
     if (fatherName === "" || !textPattern.test(fatherName)) errorMessage += "Father's Name is required and should contain only letters, spaces, and periods.\n";
     if (motherName === "" || !textPattern.test(motherName)) errorMessage += "Mother's Name is required and should contain only letters, spaces, and periods.\n";
     if (dob === "") errorMessage += "Date of Birth is required.\n";
-
     let contactPattern = /^([0-9\-]{10,15})(,\s*[0-9\-]{10,15})*$/;
     if (!contactPattern.test(contactNo)) errorMessage += "Enter valid contact numbers (comma-separated, 10-15 digits, may contain '-').\n";
-
     if (sessionSelect === "-- Select Session --") errorMessage += "Please select a valid session.\n";
     if (standardSelect === "-- Select Standard --") errorMessage += "Please select a valid standard.\n";
     if (sectionSelect === "-- Select Section --") errorMessage += "Please select a valid section.\n";
-
     let feesPattern = /^[0-9]+(\.[0-9]{1,2})?$/;
     if (feesAmount === "" || !feesPattern.test(feesAmount)) errorMessage += "Fees Amount is required and must be a valid number with up to two decimal places.\n";
-
     if (errorMessage !== "") {
         alert(errorMessage);
         return false;

@@ -73,12 +73,10 @@
 <body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
-
 <!-- Main Content -->
 <div class="main-content">
     <!-- Sidebar (Menu Section) -->
     <div th:replace="fragments/sidebar :: sidebar('school', 'session')"></div>
-
     <!-- Content Section -->
     <div class="content-section">
         <div class="container-fluid">
@@ -101,7 +99,6 @@
                         <label for="sessionName" class="form-label">Session Name</label>
                         <input type="text" id="sessionName" name="sessionName" class="form-control" required placeholder="Enter User Name" th:value="${sessionData != null ? sessionData.sessionName : ''}">
                     </div>
-
                     <div class="mb-3">
                         <label for="sessionType" class="form-label">Session Type</label>
                         <select id="sessionType" name="sessionType" class="form-select" required>
@@ -111,7 +108,6 @@
                             <option value="CLOSED" th:selected="${sessionData != null && sessionData.sessionType == 'CLOSED'}">Closed</option>
                         </select>
                     </div>
-
                     <div class="d-grid">
                         <button type="submit" class="btn btn-custom" th:text="${sessionData != null ? 'Update Session' : 'Add Session'}">Add Session</button>
                     </div>
@@ -120,13 +116,11 @@
         </div>
     </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
     function confirmReset(event) {
         var confirmed = confirm("Are you sure you wish Delete Session record?");
-
         if(!confirmed) {
             event.preventDefault();
         }
@@ -135,7 +129,6 @@
     function confirmEnableDisable(button, event) {
         var message = button.getAttribute('data-confirm-message');
         var confirmed = confirm(message);
-
         if (!confirmed) {
             event.preventDefault(); // Prevent form submission if not confirmed
         }

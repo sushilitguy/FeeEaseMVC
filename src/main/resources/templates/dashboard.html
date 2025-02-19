@@ -49,12 +49,10 @@
 <body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
-
 <!-- Main Content -->
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
   <div th:replace="fragments/sidebar :: sidebar('dashboard', '')"></div>
-
   <!-- Content Section -->
   <div class="content-section">
     <div class="container-fluid">
@@ -75,7 +73,6 @@
           <div class="card p-3">
             <h5 class="card-header">Students</h5>
             <div class="card-body">
-<!--              <p class="card-text">Session : </p>-->
               <p class="card-text">Total Students : <span th:text="${StudentSummary.totalStudents()}"></span></p>
               <p class="card-text">Active Students : <span th:text="${StudentSummary.activeStudents()}"></span></p>
               <p class="card-text">Inactive Students : <span th:text="${StudentSummary.inactiveStudents()}"></span></p>
@@ -84,12 +81,9 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
-
 </body>
 </html>

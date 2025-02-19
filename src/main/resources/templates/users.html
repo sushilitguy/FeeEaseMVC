@@ -57,12 +57,10 @@
 <body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
-
 <!-- Main Content -->
 <div class="main-content">
     <!-- Sidebar (Menu Section) -->
     <div th:replace="fragments/sidebar :: sidebar('users', '')"></div>
-
     <!-- Content Section -->
     <div class="content-section">
         <div class="container-fluid">
@@ -90,24 +88,15 @@
                     <td th:text="${user.userName}"></td>
                     <td th:text="${user.role}"></td>
                     <td th:text="${user.getSchool().getName()}"></td>
-
                     <td th:if="${Role == 'Admin'}">
                         <div class="d-flex gap-2">
                         <form th:action="@{/fee_ease/users/edit/{id}(id=${user.id})}" method="get">
                             <button type="submit" class="btn btn-secondary">Edit</button>
                         </form>
-
                         <form th:action="${user.enabled ? '/fee_ease/users/disable' : '/fee_ease/users/enable'}" method="post">
                             <input type="hidden" th:name="userId" th:value="${user.id}" />
-                            <button
-                                    type="submit"
-                                    th:text="${user.enabled ? 'Disable' : 'Enable'}"
-                                    th:class="${user.enabled ? 'btn btn-danger' : 'btn btn-success'}"
-                                    th:attr="data-confirm-message=${user.enabled ? 'Are you sure you want to disable this user?' : 'Are you sure you want to enable this user?'}"
-                                    onclick="confirmEnableDisable(this, event)">
-                            </button>
+                            <button type="submit" th:text="${user.enabled ? 'Disable' : 'Enable'}" th:class="${user.enabled ? 'btn btn-danger' : 'btn btn-success'}" th:attr="data-confirm-message=${user.enabled ? 'Are you sure you want to disable this user?' : 'Are you sure you want to enable this user?'}" onclick="confirmEnableDisable(this, event)"></button>
                         </form>
-
                         <form th:action="@{/fee_ease/users/resetPassword}" method="post">
                             <input type="hidden" th:name="userId" th:value="${user.id}" />
                             <button type="submit" class="btn btn-warning" onclick="confirmReset(event)">Reset Password</button>
@@ -120,13 +109,11 @@
         </div>
     </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
     function confirmReset(event) {
         var confirmed = confirm("Are you sure you wish to reset password?");
-
         if(!confirmed) {
             event.preventDefault();
         }
@@ -135,7 +122,6 @@
     function confirmEnableDisable(button, event) {
         var message = button.getAttribute('data-confirm-message');
         var confirmed = confirm(message);
-
         if (!confirmed) {
             event.preventDefault(); // Prevent form submission if not confirmed
         }

@@ -72,12 +72,10 @@
 <body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
-
 <!-- Main Content -->
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
   <div th:replace="fragments/sidebar :: sidebar('students', '')"></div>
-
   <!-- Content Section -->
   <div class="content-section">
     <div class="container-fluid">
@@ -135,7 +133,6 @@
           </tbody>
         </table>
       </div>
-
       <!-- Modal Dialog -->
       <div class="modal fade" id="studentModal" tabindex="-1" aria-labelledby="studentModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered -->
@@ -164,7 +161,6 @@
     </div>
   </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script>
@@ -178,7 +174,6 @@
     var studentSection = $(this).attr("data-section");
     var session = $(this).attr("data-session");
     var fees = $(this).attr("data-fees");
-
     // Populate modal fields
     $("#modal-student-name").text(studentName);
     $("#modal-student-father-name").text(fatherName);
@@ -197,7 +192,6 @@
     // Show Spinner
     $("#loadingSpinner").show();
     $("#studentTableBody").empty(); // Clear previous results
-
     $.ajax({
       url: "/fee_ease/students/filter",
       type: "GET",
