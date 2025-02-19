@@ -49,28 +49,10 @@
 <body>
 <!-- Header -->
 <div th:replace="fragments/header :: header"></div>
-
 <!-- Main Content -->
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
-  <div class="menu-section">
-    <nav class="nav flex-column">
-      <a class="nav-link active" href="#">Dashboard</a>
-      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">School Management</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="/fee_ease/sessions">Session Management</a></li>
-      </ul>
-      <a class="nav-link" href="/fee_ease/users">User Management</a>
-      <a class="nav-link" href="/fee_ease/students">Student Management</a>
-      <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Fees Management</a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Fee Type</a></li>
-        <li><a class="dropdown-item" href="#">Fees</a></li>
-        <li><a class="dropdown-item" href="#">Reports</a></li>
-      </ul>
-    </nav>
-  </div>
-
+  <div th:replace="fragments/sidebar :: sidebar('dashboard', '')"></div>
   <!-- Content Section -->
   <div class="content-section">
     <div class="container-fluid">
@@ -91,7 +73,6 @@
           <div class="card p-3">
             <h5 class="card-header">Students</h5>
             <div class="card-body">
-<!--              <p class="card-text">Session : </p>-->
               <p class="card-text">Total Students : <span th:text="${StudentSummary.totalStudents()}"></span></p>
               <p class="card-text">Active Students : <span th:text="${StudentSummary.activeStudents()}"></span></p>
               <p class="card-text">Inactive Students : <span th:text="${StudentSummary.inactiveStudents()}"></span></p>
@@ -100,12 +81,9 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
-
 <!-- Footer -->
 <div th:replace="fragments/footer :: footer"></div>
-
 </body>
 </html>

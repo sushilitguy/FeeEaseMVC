@@ -61,23 +61,7 @@
 <!-- Main Content -->
 <div class="main-content">
     <!-- Sidebar (Menu Section) -->
-    <div class="menu-section">
-        <nav class="nav flex-column">
-            <a class="nav-link" href="/fee_ease/dashboard">Dashboard</a>
-            <a class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">School Management</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item active" href="#">Session Management</a></li>
-            </ul>
-            <a class="nav-link" href="/fee_ease/users">User Management</a>
-            <a class="nav-link" href="/fee_ease/students">Student Management</a>
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Fees Management</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Fee Type</a></li>
-                <li><a class="dropdown-item" href="#">Fees</a></li>
-                <li><a class="dropdown-item" href="#">Reports</a></li>
-            </ul>
-        </nav>
-    </div>
+    <div th:replace="fragments/sidebar :: sidebar('school', 'session')"></div>
 
     <!-- Content Section -->
     <div class="content-section">
