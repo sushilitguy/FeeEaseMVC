@@ -55,51 +55,12 @@
     </style>
 </head>
 <body>
-
-<!-- Header (Navbar) -->
-<nav class="navbar navbar-expand-lg navbar-light border-bottom">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-primary" href="#">
-            <img src="/images/FeeEase.png" alt="FeeEase Logo" width="100" height="64">
-        </a>
-        <div class="d-flex justify-content-center position-absolute w-100" style="left: 50%; transform: translateX(-50%);">
-            <span class="navbar-text fw-bold" style="font-size: 2rem; color:#068388;" th:text="${SchoolName}">Dashboard</span>
-        </div>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="/images/userIcon.png" class="rounded-circle" width="32" height="32">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+<!-- Header -->
+<div th:replace="fragments/header :: header"></div>
 <!-- Main Content -->
 <div class="main-content">
     <!-- Sidebar (Menu Section) -->
-    <div class="menu-section">
-        <nav class="nav flex-column">
-            <a class="nav-link" href="/fee_ease/dashboard">Dashboard</a>
-            <a class="nav-link active" href="#">User Management</a>
-            <a class="nav-link" href="/fee_ease/students">Student Management</a>
-            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Fees Management</a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Fee Type</a></li>
-                <li><a class="dropdown-item" href="#">Fees</a></li>
-                <li><a class="dropdown-item" href="#">Reports</a></li>
-            </ul>
-        </nav>
-    </div>
-
+    <div th:replace="fragments/sidebar :: sidebar('users', '')"></div>
     <!-- Content Section -->
     <div class="content-section">
         <div class="container-fluid">
@@ -127,24 +88,15 @@
                     <td th:text="${user.userName}"></td>
                     <td th:text="${user.role}"></td>
                     <td th:text="${user.getSchool().getName()}"></td>
-
                     <td th:if="${Role == 'Admin'}">
                         <div class="d-flex gap-2">
                         <form th:action="@{/fee_ease/users/edit/{id}(id=${user.id})}" method="get">
                             <button type="submit" class="btn btn-secondary">Edit</button>
                         </form>
-
                         <form th:action="${user.enabled ? '/fee_ease/users/disable' : '/fee_ease/users/enable'}" method="post">
                             <input type="hidden" th:name="userId" th:value="${user.id}" />
-                            <button
-                                    type="submit"
-                                    th:text="${user.enabled ? 'Disable' : 'Enable'}"
-                                    th:class="${user.enabled ? 'btn btn-danger' : 'btn btn-success'}"
-                                    th:attr="data-confirm-message=${user.enabled ? 'Are you sure you want to disable this user?' : 'Are you sure you want to enable this user?'}"
-                                    onclick="confirmEnableDisable(this, event)">
-                            </button>
+                            <button type="submit" th:text="${user.enabled ? 'Disable' : 'Enable'}" th:class="${user.enabled ? 'btn btn-danger' : 'btn btn-success'}" th:attr="data-confirm-message=${user.enabled ? 'Are you sure you want to disable this user?' : 'Are you sure you want to enable this user?'}" onclick="confirmEnableDisable(this, event)"></button>
                         </form>
-
                         <form th:action="@{/fee_ease/users/resetPassword}" method="post">
                             <input type="hidden" th:name="userId" th:value="${user.id}" />
                             <button type="submit" class="btn btn-warning" onclick="confirmReset(event)">Reset Password</button>
@@ -157,7 +109,6 @@
         </div>
     </div>
 </div>
-
 <!-- Footer -->
 <footer class="py-3 border-top">
     <div class="container-fluid d-flex justify-content-between">
@@ -178,7 +129,6 @@
 <script>
     function confirmReset(event) {
         var confirmed = confirm("Are you sure you wish to reset password?");
-
         if(!confirmed) {
             event.preventDefault();
         }
@@ -187,7 +137,6 @@
     function confirmEnableDisable(button, event) {
         var message = button.getAttribute('data-confirm-message');
         var confirmed = confirm(message);
-
         if (!confirmed) {
             event.preventDefault(); // Prevent form submission if not confirmed
         }
