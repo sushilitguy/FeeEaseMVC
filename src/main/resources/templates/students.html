@@ -218,14 +218,33 @@
                                 "data-standard='" + student.standard + "' "+
                                 "data-section='" + student.section + "' "+
                                 "data-session='" + student.session.sessionName + "' "+
-                                "data-fees='" + student.feesAmount + "'>View</button>";
+                                "data-fees='" + student.feesAmount + "'>"+
+                                "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-eye' viewBox='0 0 16 16'>" +
+                                "<path d='M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z'/>" +
+                                "<path d='M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0'/>" +
+                                "</svg>" +
+                                "&nbspView</button>";
             // If user is Admin, show Edit, Enable/Disable buttons
             if (role === "Admin") {
               row +=  "<form action='/fee_ease/students/edit/" + student.id + "' method='get' style='display:inline;'>" +
-                "<button type='submit' class='btn btn-warning'>Edit</button>" +
+                "<button type='submit' class='btn btn-warning'>" +
+                "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-pencil-square' viewBox='0 0 16 16'>" +
+                "<path d='M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z'></path>" +
+                "<path fill-rule='evenodd' d='M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z'></path>" +
+                "</svg>" +
+                "&nbspEdit</button>" +
                 "</form>" +
                 "<form action='/fee_ease/" + (student.enabled ? "students/disable" : "students/enable") + "' method='post' style='display:inline;'>" +
                 "<button type='button' id='enableDisablebtn"+student.id+"' onclick='enableDisableStudent(event, "+student.id+")' class='" + (student.enabled ? "btn btn-danger" : "btn btn-success") + "'>" +
+                (student.enabled ?
+                  "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-toggle-off' viewBox='0 0 16 16'>" +
+                    "<path d='M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5'/>" +
+                  "</svg>&nbsp"
+                  :
+                  "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-toggle-on' viewBox='0 0 16 16'>" +
+                    "<path d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8'/>" +
+                  "</svg>&nbsp"
+                ) +
                 (student.enabled ? "Disable" : "Enable") +
                 "</button>" +
                 "</form>";
@@ -248,41 +267,48 @@
     });
   }
 
-  function enableDisableStudent(event,id) {
+  function enableDisableStudent(event, id) {
     event.preventDefault();
-    var button = $("#enableDisablebtn"+id);
+    var button = $("#enableDisablebtn" + id);
     var form = button.closest("form");
     var actionUrl = form.attr("action");
-    var confirmMsg;
-    if(actionUrl === "/fee_ease/students/enable") {
-      confirmMsg = "Are you Sure you want to Enable Student?";
-    } else {
-      confirmMsg = "Are you Sure you want to Disable Student?";
-    }
+    var confirmMsg = actionUrl === "/fee_ease/students/enable"
+                      ? "Are you sure you want to Enable the Student?"
+                      : "Are you sure you want to Disable the Student?";
+
     var confirmed = confirm(confirmMsg);
-    if(confirmed) {
+    if (confirmed) {
       $.ajax({
-        url: actionUrl,
-        type: "POST",
-        data: { studentId: id },
-        success: function (response) {
-          if(response != null) {
-            // Toggle button state
-            if (button.hasClass("btn-danger")) {
-              button.removeClass("btn-danger").addClass("btn-success").text("Enable");
-              form.attr("action", "/fee_ease/students/enable");
-            } else {
-              button.removeClass("btn-success").addClass("btn-danger").text("Disable");
-              form.attr("action", "/fee_ease/students/disable");
+            url: actionUrl,
+            type: "POST",
+            data: { studentId: id },
+            success: function (response) {
+                if (response != null) {
+                    // Determine new action and button state
+                    var isEnabling = actionUrl === "/fee_ease/students/enable";
+                    form.attr("action", isEnabling ? "/fee_ease/students/disable" : "/fee_ease/students/enable");
+
+                    // Update button class
+                    button
+                        .toggleClass("btn-success btn-danger")
+                        .html(
+                            (isEnabling
+                              ? "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-toggle-off' viewBox='0 0 16 16'>" +
+                                "<path d='M11 4a4 4 0 0 1 0 8H8a5 5 0 0 0 2-4 5 5 0 0 0-2-4zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8M0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5'/>" +
+                              "</svg>&nbspDisable"
+                              : "<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-toggle-on' viewBox='0 0 16 16'>" +
+                                "<path d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8'/>" +
+                              "</svg>&nbspEnable"
+                            )
+                        );
+                } else {
+                    alert("Error updating student status.");
+                }
+            },
+            error: function () {
+                alert("Error updating student status.");
             }
-          } else {
-            alert("Error updating student status.");
-          }
-        },
-        error: function () {
-          alert("Error updating student status.");
-        }
-      });
+        });
     }
   }
 </script>
