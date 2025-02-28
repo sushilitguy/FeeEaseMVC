@@ -2,7 +2,7 @@ package com.softmania.feeease.controller;
 
 import com.softmania.feeease.model.School;
 import com.softmania.feeease.model.UserData;
-import com.softmania.feeease.service.AcademicSessionService;
+import com.softmania.feeease.service.SchoolManagementService;
 import com.softmania.feeease.service.StudentsService;
 import com.softmania.feeease.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class HomeController {
     @Autowired
     private StudentsService studentsService;
     @Autowired
-    private AcademicSessionService sessionService;
+    private SchoolManagementService schoolManagementService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home() {
@@ -49,7 +49,7 @@ public class HomeController {
         model.addAttribute("SchoolName", school.getName().toUpperCase());
         model.addAttribute("UserSummary", usersService.getUserSummary(school.getId()));
         model.addAttribute("StudentSummary", studentsService.getStudentSummary(school.getId()));
-        model.addAttribute("currentSession", sessionService.getCurrentAcademicSession(school.getId()).getSessionName());
+        model.addAttribute("currentSession", schoolManagementService.getCurrentAcademicSession(school.getId()).getSessionName());
         return "dashboard";
     }
 }
