@@ -1,7 +1,5 @@
 package com.softmania.feeease.service;
 
-import com.softmania.feeease.dto.Section;
-import com.softmania.feeease.dto.Standard;
 import com.softmania.feeease.dto.StudentSummary;
 import com.softmania.feeease.model.Students;
 import com.softmania.feeease.repo.StudentsRepo;
