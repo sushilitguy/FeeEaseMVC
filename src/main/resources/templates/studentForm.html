@@ -125,14 +125,14 @@
             <label for="standardSelect" class="form-label">Standard : </label>
             <select class="form-select" id="standardSelect" name="standardSelect">
               <option>-- Select Standard --</option>
-              <option th:each="standard : ${StandardList}" th:value="${standard.standard()}" th:text="${standard.standard()}" th:selected="${student != null && student.standard == standard.standard()}"></option>
+              <option th:each="standard : ${StandardList}" th:value="${standard.id}" th:text="${standard.standardName}" th:selected="${student != null && student.standard.standardName == standard.standardName}"></option>
             </select>
           </div>
           <div class="mb-3">
             <label for="sectionSelect" class="form-label">Section : </label>
             <select class="form-select" id="sectionSelect" name="sectionSelect">
-              <option>-- Select Section --</option>
-              <option th:each="section : ${SectionList}" th:value="${section.section()}" th:text="${section.section()}" th:selected="${student != null && student.section == section.section()}"></option>
+              <option value="0">-- Select Section --</option>
+              <option th:each="section : ${SectionList}" th:value="${section.id}" th:text="${section.sectionName}" th:selected="${student != null && student.section != null && student.section.sectionName == section.sectionName}"></option>
             </select>
           </div>
           <div class="mb-3">
@@ -170,7 +170,7 @@
     if (!contactPattern.test(contactNo)) errorMessage += "Enter valid contact numbers (comma-separated, 10-15 digits, may contain '-').\n";
     if (sessionSelect === "-- Select Session --") errorMessage += "Please select a valid session.\n";
     if (standardSelect === "-- Select Standard --") errorMessage += "Please select a valid standard.\n";
-    if (sectionSelect === "-- Select Section --") errorMessage += "Please select a valid section.\n";
+    //if (sectionSelect === "-- Select Section --") errorMessage += "Please select a valid section.\n";
     let feesPattern = /^[0-9]+(\.[0-9]{1,2})?$/;
     if (feesAmount === "" || !feesPattern.test(feesAmount)) errorMessage += "Fees Amount is required and must be a valid number with up to two decimal places.\n";
     if (errorMessage !== "") {

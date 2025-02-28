@@ -3,7 +3,7 @@ package com.softmania.feeease.controller;
 import com.softmania.feeease.model.School;
 import com.softmania.feeease.model.Students;
 import com.softmania.feeease.model.UserData;
-import com.softmania.feeease.service.AcademicSessionService;
+import com.softmania.feeease.service.SchoolManagementService;
 import com.softmania.feeease.service.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -20,15 +20,15 @@ public class StudentController {
     @Autowired
     private StudentsService service;
     @Autowired
-    private AcademicSessionService sessionService;
+    private SchoolManagementService schoolManagementService;
 
     @RequestMapping(value = "/students", method = RequestMethod.GET)
     public String viewStudents(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", service.getAllStandards(school.getId()));
+        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
         return "students";
     }
 
@@ -53,9 +53,9 @@ public class StudentController {
     public String viewAddStudentForm(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", service.getAllStandards(school.getId()));
-        model.addAttribute("SectionList", service.getAllSections(school.getId()));
+        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute("SectionList", schoolManagementService.getAllSections(school.getId()));
         return "studentForm";
     }
 
@@ -63,9 +63,9 @@ public class StudentController {
     public String viewEditStudentForm(Authentication auth, Model model, @PathVariable int studentId) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", service.getAllStandards(school.getId()));
-        model.addAttribute("SectionList", service.getAllSections(school.getId()));
+        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute("SectionList", schoolManagementService.getAllSections(school.getId()));
         model.addAttribute("student", service.getStudentById(studentId));
         return "studentForm";
     }
@@ -78,10 +78,11 @@ public class StudentController {
                              @RequestParam("dob") LocalDate dob,
                              @RequestParam("contactNo") String contactNo,
                              @RequestParam("sessionSelect") String session,
-                             @RequestParam("standardSelect") String standard,
-                             @RequestParam("sectionSelect") String section,
+                             @RequestParam("standardSelect") int standardId,
+                             @RequestParam("sectionSelect") int sectionId,
                              @RequestParam("feesAmount") double feesAmount) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        String error = "";
 
         Students student = new Students();
         student.setName(studentName);
@@ -89,9 +90,9 @@ public class StudentController {
         student.setMotherName(motherName);
         student.setDob(dob);
         student.setContactNo(contactNo);
-        student.setSession(sessionService.getAcademicSessionBySessionName(session));
-        student.setStandard(standard);
-        student.setSection(section);
+        student.setSession(schoolManagementService.getAcademicSessionBySessionName(session));
+        student.setStandard(schoolManagementService.getStandardById(standardId));
+        student.setSection(schoolManagementService.getSectionById(sectionId).orElse(null));
         student.setFeesAmount(feesAmount);
         student.setSchool(school);
 
@@ -104,9 +105,9 @@ public class StudentController {
         }
 
         model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", service.getAllStandards(school.getId()));
-        model.addAttribute("SectionList", service.getAllSections(school.getId()));
+        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute("SectionList", schoolManagementService.getAllSections(school.getId()));
         return "studentForm";
     }
 
@@ -119,8 +120,8 @@ public class StudentController {
                              @RequestParam("dob") LocalDate dob,
                              @RequestParam("contactNo") String contactNo,
                              @RequestParam("sessionSelect") String session,
-                             @RequestParam("standardSelect") String standard,
-                             @RequestParam("sectionSelect") String section,
+                             @RequestParam("standardSelect") int standardId,
+                             @RequestParam("sectionSelect") int sectionId,
                              @RequestParam("feesAmount") double feesAmount) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
 
@@ -131,9 +132,9 @@ public class StudentController {
             student.setMotherName(motherName);
             student.setDob(dob);
             student.setContactNo(contactNo);
-            student.setSession(sessionService.getAcademicSessionBySessionName(session));
-            student.setStandard(standard);
-            student.setSection(section);
+            student.setSession(schoolManagementService.getAcademicSessionBySessionName(session));
+            student.setStandard(schoolManagementService.getStandardById(standardId));
+            student.setSection(schoolManagementService.getSectionById(sectionId).orElse(null));
             student.setFeesAmount(feesAmount);
             student.setSchool(school);
 
@@ -150,16 +151,16 @@ public class StudentController {
 
         model.addAttribute("SchoolName",school.getName().toUpperCase());
         model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        model.addAttribute("SessionList", sessionService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", service.getAllStandards(school.getId()));
+        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
 
         return "students";
     }
 
     @RequestMapping(value = "/students/filter", method = RequestMethod.GET)
     @ResponseBody
-    public List<Students> filterStudents(@RequestParam String session, @RequestParam String standard) {
-        return service.getStudentsBySessionIdAndStandard(sessionService.getAcademicSessionBySessionName(session).getId(), standard);
+    public List<Students> filterStudents(@RequestParam String session, @RequestParam int standardId) {
+        return service.getStudentsBySessionIdAndStandard(schoolManagementService.getAcademicSessionBySessionName(session).getId(), standardId);
     }
 
     @RequestMapping(value = "/students/enable", method = RequestMethod.POST)

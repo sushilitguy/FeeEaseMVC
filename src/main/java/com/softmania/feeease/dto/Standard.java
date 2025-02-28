@@ -1,4 +1,4 @@
 package com.softmania.feeease.dto;
 
-public record Standard(String standard) {
+public record Standard(int id, String standard) {
 }

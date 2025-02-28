@@ -71,15 +71,17 @@ public class StudentsService {
         return new StudentSummary(totalStudents, activeStudents, inactiveStudents);
     }
 
-    public List<Standard> getAllStandards(int schoolId) {
-        return repo.getAllStandards(schoolId);
+//    public List<Standard> getAllStandards(int schoolId) {
+//        return repo.getAllStandards(schoolId);
+//    }
+
+    public List<Students> getStudentsBySessionIdAndStandard(int sessionId, int standardId) {
+        List<Students> lstStudents = repo.findBySessionIdAndStandardId(sessionId, standardId);
+        System.out.println(lstStudents);
+        return lstStudents;
     }
 
-    public List<Students> getStudentsBySessionIdAndStandard(int sessionId, String standard) {
-        return repo.findBySessionIdAndStandard(sessionId, standard);
-    }
-
-    public List<Section> getAllSections(int schoolId) {
-        return repo.getAllSections(schoolId);
-    }
+//    public List<Section> getAllSections(int schoolId) {
+//        return repo.getAllSections(schoolId);
+//    }
 }
