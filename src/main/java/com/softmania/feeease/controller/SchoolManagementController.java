@@ -212,6 +212,6 @@ class SchoolManagementController {
         if(!errorMsg.isEmpty()) {
             model.addAttribute("errorMessage", errorMsg);
         }
-        return "standard";
+        return "section";
     }
 }
