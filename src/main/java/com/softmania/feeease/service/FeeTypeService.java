@@ -9,8 +9,12 @@ import java.util.List;
 
 @Service
 public class FeeTypeService {
+    private final FeeTypeRepo repo;
+
     @Autowired
-    private FeeTypeRepo repo;
+    public FeeTypeService(FeeTypeRepo repo) {
+        this.repo = repo;
+    }
 
     public List<FeeType> getFeeTypes() {
         return repo.findAll();

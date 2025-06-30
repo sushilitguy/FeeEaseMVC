@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,4 +18,7 @@ public class School {
 	private int id;
 	private String name;
 	private String address;
+	private String contactNo;
+	private String email;
+	private String schoolLogoKey;
 }

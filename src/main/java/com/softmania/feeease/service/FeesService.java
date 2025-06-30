@@ -11,16 +11,16 @@ import java.util.List;
 
 @Service
 public class FeesService {
+    private final FeesRepo repo;
+    private final StudentsService studentService;
+    private final FeeTypeService feeTypeService;
+
     @Autowired
-    private FeesRepo repo;
-    @Autowired
-    private StudentsService studentService;
-    @Autowired
-    private FeeTypeService feeTypeService;
-    @Autowired
-    private UsersService userService;
-    @Autowired
-    private AuthenticationManager authManager;
+    public FeesService(FeesRepo repo, StudentsService studentService, FeeTypeService feeTypeService, UsersService userService, AuthenticationManager authManager) {
+        this.repo = repo;
+        this.studentService = studentService;
+        this.feeTypeService = feeTypeService;
+    }
 
     public List<Fees> getFeesPaidByYear(int year, int schoolId) {
         return repo.getFeesPaidByYear(year, schoolId);
@@ -46,11 +46,9 @@ public class FeesService {
     public Fees addFees(Fees recievedFees) throws Exception {
         Students currentStudent = studentService.getStudentById(recievedFees.getStudent().getId());
         FeeType currentFeeType = feeTypeService.getFeeTypeById(recievedFees.getFeeType().getId());
-        Users currentUser = null;
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal instanceof UserData) {
-            currentUser = ((UserData)principal).getUser();
-        }
+        UserData principal = (UserData) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Users currentUser = principal.getUser();
+
         if(currentStudent != null && currentFeeType != null && currentUser != null) {
             recievedFees.setFeeType(currentFeeType);
             recievedFees.setStudent(currentStudent);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -69,7 +69,9 @@
 <div class="content">
     <div class="register-container">
         <h3 class="text-center mb-4" style="color:#068388;">Register Your School</h3>
-        <form action="/register" method="post">
+        <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+        <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+        <form action="/fee_ease/register_school" method="post">
             <div class="mb-3">
                 <label for="schoolName" class="form-label">School Name</label>
                 <input type="text" class="form-control" id="schoolName" name="schoolName" placeholder="Enter school name" required>
@@ -94,6 +96,10 @@
                 <label for="adminPassword" class="form-label">Admin Password</label>
                 <input type="password" class="form-control" id="adminPassword" name="adminPassword" placeholder="Enter admin password" required>
             </div>
+            <div class="mb-3">
+                <label for="readminPassword" class="form-label">Admin Password</label>
+                <input type="password" class="form-control" id="readminPassword" name="readminPassword" placeholder="Re-Enter admin password" required>
+            </div>
             <button type="submit" class="btn btn-primary w-100">Register</button>
         </form>
     </div>
@@ -116,5 +122,54 @@
         </ul>
     </div>
 </footer>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+      const schoolName = document.getElementById("schoolName").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const contactNo = document.getElementById("contactNo").value.trim();
+      const adminUserName = document.getElementById("adminUserName").value.trim();
+      const adminPassword = document.getElementById("adminPassword").value;
+      const readminPassword = document.getElementById("readminPassword").value;
+
+      // Basic empty check
+      if (!schoolName || !address || !email || !contactNo || !adminUserName || !adminPassword || !readminPassword) {
+        alert("Please fill all required fields.");
+        e.preventDefault();
+        return;
+      }
+
+      // Email validation
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address.");
+        e.preventDefault();
+        return;
+      }
+
+      // Contact number validation (digits only, length at least 10)
+      const contactPattern = /^\d{10,}$/;
+      if (!contactPattern.test(contactNo)) {
+        alert("Please enter a valid contact number (at least 10 digits).");
+        e.preventDefault();
+        return;
+      }
+
+      // Password match check
+      if (adminPassword !== readminPassword) {
+        alert("Passwords do not match.");
+        e.preventDefault();
+        return;
+      }
+
+      // Optional: Password strength check
+      const strongPasswordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{6,}$/;
+      if (!strongPasswordPattern.test(adminPassword)) {
+        alert("Password must be at least 6 characters long and include letters and numbers.");
+        e.preventDefault();
+        return;
+      }
+    });
+</script>
 </body>
 </html>

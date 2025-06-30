@@ -72,10 +72,10 @@
 </head>
 <body>
 <!-- Header -->
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
-  <div th:replace="fragments/sidebar :: sidebar('users', '')"></div>
+  <div th:replace="~{fragments/sidebar :: sidebar('users', '')}"></div>
   <!-- Content Section -->
   <div class="content-section">
     <div class="container-fluid">
@@ -122,7 +122,7 @@
   </div>
 </div>
 <!-- Footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
   function validatePasswords() {
       const password = document.getElementById('password').value;

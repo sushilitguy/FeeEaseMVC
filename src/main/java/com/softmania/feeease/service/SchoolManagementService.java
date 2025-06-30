@@ -1,11 +1,9 @@
 package com.softmania.feeease.service;
 
 import com.softmania.feeease.dto.Session;
-import com.softmania.feeease.model.AcademicSession;
-import com.softmania.feeease.model.Section;
-import com.softmania.feeease.model.SessionType;
-import com.softmania.feeease.model.Standard;
+import com.softmania.feeease.model.*;
 import com.softmania.feeease.repo.AcademicSessionRepo;
+import com.softmania.feeease.repo.SchoolRepo;
 import com.softmania.feeease.repo.SectionRepo;
 import com.softmania.feeease.repo.StandardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +14,18 @@ import java.util.Optional;
 
 @Service
 public class SchoolManagementService {
+    private final AcademicSessionRepo sessionRepository;
+    private final StandardRepo standardRepository;
+    private final SectionRepo sectionRepo;
+    private final SchoolRepo schoolRepo;
+
     @Autowired
-    private AcademicSessionRepo sessionRepository;
-    @Autowired
-    private StandardRepo standardRepository;
-    @Autowired
-    private SectionRepo sectionRepo;
+    public SchoolManagementService(AcademicSessionRepo sessionRepository, StandardRepo standardRepository, SectionRepo sectionRepo, SchoolRepo schoolRepo) {
+        this.sessionRepository = sessionRepository;
+        this.standardRepository = standardRepository;
+        this.sectionRepo = sectionRepo;
+        this.schoolRepo = schoolRepo;
+    }
 
     public List<Session> getAllSessions(int schoolId) {
         return sessionRepository.findBySchoolId(schoolId);
@@ -112,5 +116,17 @@ public class SchoolManagementService {
 
     public Section updateSection(Section existingSection) {
         return sectionRepo.save(existingSection);
+    }
+
+    public School saveSchool(School school) {
+        return schoolRepo.save(school);
+    }
+
+    public School updateSchool(School school) {
+        School savedSchool = null;
+        if(schoolRepo.existsById(school.getId())) {
+            savedSchool = schoolRepo.save(school);
+        }
+        return savedSchool;
     }
 }

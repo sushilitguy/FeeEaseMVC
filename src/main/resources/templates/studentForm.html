@@ -73,10 +73,10 @@
 </head>
 <body>
 <!-- Header -->
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
-  <div th:replace="fragments/sidebar :: sidebar('students', '')"></div>
+  <div th:replace="~{fragments/sidebar :: sidebar('students', '')}"></div>
   <!-- Content Section -->
   <div class="content-section">
     <div class="container-fluid">
@@ -95,7 +95,7 @@
         <form id="addUserForm" method="post" th:action="${student != null ? '/fee_ease/students/update' : '/fee_ease/students/add'}" onsubmit="return validateStudentData()">
           <input type="hidden" name="studentId" th:value="${student != null ? student.id : ''}" />
           <div class="mb-3">
-            <label for="studentName" class="form-label">User Name</label>
+            <label for="studentName" class="form-label">Student Name</label>
             <input type="text" id="studentName" name="studentName" class="form-control" required placeholder="Enter Student Name" th:value="${student != null ? student.name : ''}">
           </div>
           <div class="mb-3">
@@ -148,7 +148,7 @@
   </div>
 </div>
 <!-- Footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
   function validateStudentData() {
     let studentName = document.getElementById("studentName").value.trim();

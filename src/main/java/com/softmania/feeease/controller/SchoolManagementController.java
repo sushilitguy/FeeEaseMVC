@@ -3,49 +3,71 @@ package com.softmania.feeease.controller;
 import com.softmania.feeease.dto.Session;
 import com.softmania.feeease.model.*;
 import com.softmania.feeease.service.SchoolManagementService;
+import com.softmania.feeease.service.UploadService;
+import com.softmania.feeease.util.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
 @RequestMapping("/fee_ease/school")
 class SchoolManagementController {
+    private final SchoolManagementService service;
+    private final UploadService uploadService;
+
     @Autowired
-    private SchoolManagementService service;
+    public SchoolManagementController(SchoolManagementService service, UploadService uploadService) {
+        this.service = service;
+        this.uploadService = uploadService;
+    }
+
+    @GetMapping("/profile")
+    public String showSchoolProfile(Authentication auth, Model model) {
+        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        model.addAttribute("school", school);
+        return Const.VIEW_SCHOOL_PROFILE;
+    }
+
+    @PostMapping("/upload")
+    public String uploadSchoolLogo(Authentication auth, Model model, @RequestParam("logoFile") MultipartFile file) {
+        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
+        String key = String.format("/school/%d/%s",school.getId(), file.getOriginalFilename());
+        boolean uploaded = uploadService.uploadFile(key, file);
+        if(uploaded) {
+            school.setSchoolLogoKey(key);
+            school = service.updateSchool(school);
+            model.addAttribute(Const.ATTR_SCHOOL_LOGO, uploadService.generatePresignedUrl(school.getSchoolLogoKey()).getUrl());
+        }
+        model.addAttribute("school", school);
+        return Const.VIEW_SCHOOL_PROFILE;
+    }
 
     @GetMapping("/sessions")
     public String getAllSessions(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         List<Session> allSessions = service.getAllSessions(school.getId());
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("sessions", allSessions);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        return "session";
+        model.addAttribute(Const.ATTR_SESSIONS, allSessions);
+        return Const.VIEW_SESSION;
     }
 
     @GetMapping("/sessions/add")
     public String showAddUserForm(Authentication auth, Model model) {
-        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        return "sessionForm";
+        return Const.VIEW_SESSION_FORM;
     }
 
     @GetMapping("/sessions/update/{sessionId}")
     public String editUserForm(Authentication auth, Model model, @PathVariable int sessionId) {
-        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
         AcademicSession academicSession = service.getSessionById(sessionId).orElse(null);
         if(academicSession != null) {
             Session sessionData = new Session(academicSession.getId(), academicSession.getSessionName(), academicSession.getSessionType().toString());
-            model.addAttribute("sessionData", sessionData);
+            model.addAttribute(Const.ATTR_SESSION_DATA, sessionData);
         }
-        return "sessionForm";
+        return Const.VIEW_SESSION_FORM;
     }
 
     @PostMapping("/sessions/add")
@@ -57,13 +79,11 @@ class SchoolManagementController {
         session.setSchool(school);
         AcademicSession savedSession = service.createSession(session);
         if(savedSession != null) {
-            model.addAttribute("successMessage", "Session Added Successfully");
+            model.addAttribute(Const.ATTR_SUCCESS, "Session Added Successfully");
         } else {
-            model.addAttribute("errorMessage","Error while adding session, Please try again");
+            model.addAttribute(Const.ATTR_ERROR,"Error while adding session, Please try again");
         }
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        return "sessionForm";
+        return Const.VIEW_SESSION_FORM;
     }
 
     @PostMapping("/sessions/update")
@@ -75,29 +95,25 @@ class SchoolManagementController {
             session.setSessionType(SessionType.valueOf(sessionType.toUpperCase()));
             AcademicSession savedSession = service.updateSession(session);
             if (savedSession != null) {
-                model.addAttribute("successMessage", "Session Added Successfully");
+                model.addAttribute(Const.ATTR_SUCCESS, "Session Added Successfully");
             } else {
-                model.addAttribute("errorMessage", "Error while adding session, Please try again");
+                model.addAttribute(Const.ATTR_ERROR, "Error while adding session, Please try again");
             }
         }
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
         List<Session> allSessions = service.getAllSessions(school.getId());
-        model.addAttribute("sessions", allSessions);
-        return "session";
+        model.addAttribute(Const.ATTR_SESSIONS, allSessions);
+        return Const.VIEW_SESSION;
     }
 
     @GetMapping("/standards")
     public String getAllStandards(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         List<Standard> allStandards = service.getAllStandards(school.getId());
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
         if(allStandards.isEmpty()) {
-            model.addAttribute("errorMessage","No Standard Data is present, please add Standard Data.");
+            model.addAttribute(Const.ATTR_ERROR,"No Standard Data is present, please add Standard Data.");
         }
-        model.addAttribute("standards", allStandards);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        return "standard";
+        model.addAttribute(Const.ATTR_STANDARDS, allStandards);
+        return Const.VIEW_STANDARD;
     }
 
     @PostMapping("/standards/add")
@@ -115,13 +131,11 @@ class SchoolManagementController {
         if (allStandards.isEmpty()) {
             errorMsg += "No Standard Data is present, please add Standard Data. ";
         }
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("standards", allStandards);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        model.addAttribute(Const.ATTR_STANDARDS, allStandards);
         if(!errorMsg.isEmpty()) {
-            model.addAttribute("errorMessage", errorMsg);
+            model.addAttribute(Const.ATTR_ERROR, errorMsg);
         }
-        return "standard";
+        return Const.VIEW_STANDARD;
     }
 
     @PostMapping("/standards/update")
@@ -142,26 +156,22 @@ class SchoolManagementController {
         if (allStandards.isEmpty()) {
             errorMsg += "No Standard Data is present, please add Standard Data. ";
         }
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("standards", allStandards);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        model.addAttribute(Const.ATTR_STANDARDS, allStandards);
         if(!errorMsg.isEmpty()) {
-            model.addAttribute("errorMessage", errorMsg);
+            model.addAttribute(Const.ATTR_ERROR, errorMsg);
         }
-        return "standard";
+        return Const.VIEW_STANDARD;
     }
 
     @GetMapping("/sections")
     public String getAllSections(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
         List<Section> allSections = service.getAllSections(school.getId());
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
         if(allSections.isEmpty()) {
-            model.addAttribute("errorMessage","No Section Data is present, please add Section Data.");
+            model.addAttribute(Const.ATTR_ERROR,"No Section Data is present, please add Section Data.");
         }
-        model.addAttribute("sections", allSections);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        return "section";
+        model.addAttribute(Const.ATTR_SECTIONS, allSections);
+        return Const.VIEW_SECTION;
     }
 
     @PostMapping("/sections/add")
@@ -179,13 +189,11 @@ class SchoolManagementController {
         if (allSections.isEmpty()) {
             errorMsg += "No Section Data is present, please add Section Data. ";
         }
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("sections", allSections);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        model.addAttribute(Const.ATTR_SECTIONS, allSections);
         if(!errorMsg.isEmpty()) {
-            model.addAttribute("errorMessage", errorMsg);
+            model.addAttribute(Const.ATTR_ERROR, errorMsg);
         }
-        return "section";
+        return Const.VIEW_SECTION;
     }
 
     @PostMapping("/sections/update")
@@ -206,12 +214,10 @@ class SchoolManagementController {
         if (allSections.isEmpty()) {
             errorMsg += "No Section Data is present, please add Section Data. ";
         }
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("sections", allSections);
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
+        model.addAttribute(Const.ATTR_SECTIONS, allSections);
         if(!errorMsg.isEmpty()) {
-            model.addAttribute("errorMessage", errorMsg);
+            model.addAttribute(Const.ATTR_ERROR, errorMsg);
         }
-        return "section";
+        return Const.VIEW_SECTION;
     }
 }

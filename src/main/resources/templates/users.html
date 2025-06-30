@@ -56,11 +56,11 @@
 </head>
 <body>
 <!-- Header -->
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <!-- Main Content -->
 <div class="main-content">
     <!-- Sidebar (Menu Section) -->
-    <div th:replace="fragments/sidebar :: sidebar('users', '')"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar('users', '')}"></div>
     <!-- Content Section -->
     <div class="content-section">
         <div class="container-fluid">
@@ -124,7 +124,7 @@
     </div>
 </div>
 <!-- Footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
     function confirmReset(event) {
         var confirmed = confirm("Are you sure you wish to reset password?");

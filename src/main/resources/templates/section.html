@@ -63,12 +63,12 @@
 </head>
 <body>
 <!-- Header -->
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 
 <!-- Main Content -->
 <div class="main-content">
   <!-- Sidebar (Menu Section) -->
-  <div th:replace="fragments/sidebar :: sidebar('school', 'section')"></div>
+  <div th:replace="~{fragments/sidebar :: sidebar('school', 'section')}"></div>
 
   <!-- Content Section -->
   <div class="content-section">
@@ -127,7 +127,7 @@
 </div>
 
 <!-- Footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
   function populateForm(button) {
     const sectionId = button.getAttribute("data-id");

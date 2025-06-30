@@ -6,7 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,6 +16,6 @@ public class FeeType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String feeType;
+	private String feesType;
 	private String description;
 }

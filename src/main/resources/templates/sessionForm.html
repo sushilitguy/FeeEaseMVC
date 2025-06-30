@@ -72,11 +72,11 @@
 </head>
 <body>
 <!-- Header -->
-<div th:replace="fragments/header :: header"></div>
+<div th:replace="~{fragments/header :: header}"></div>
 <!-- Main Content -->
 <div class="main-content">
     <!-- Sidebar (Menu Section) -->
-    <div th:replace="fragments/sidebar :: sidebar('school', 'session')"></div>
+    <div th:replace="~{fragments/sidebar :: sidebar('school', 'session')}"></div>
     <!-- Content Section -->
     <div class="content-section">
         <div class="container-fluid">
@@ -92,7 +92,7 @@
                 <h2 class="text-center mb-4" style="color:#068388" th:text="${sessionData != null ? 'Edit Session Details' : 'Add Session'}">Add Session</h2>
                 <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
                 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
-                <form id="addUserForm" method="post" th:action="${sessionData != null ? '/fee_ease/sessions/update' : '/fee_ease/sessions/add'}" onsubmit="return validatePasswords()">
+                <form id="addUserForm" method="post" th:action="${sessionData != null ? '/fee_ease/school/sessions/update' : '/fee_ease/school/sessions/add'}" onsubmit="return validatePasswords()">
                     <input type="hidden" name="_method" th:value="${sessionData != null ? 'put' : 'post'}" />
                     <input type="hidden" name="sessionId" th:value="${sessionData != null ? sessionData.id : ''}" />
                     <div class="mb-3">
@@ -117,7 +117,7 @@
     </div>
 </div>
 <!-- Footer -->
-<div th:replace="fragments/footer :: footer"></div>
+<div th:replace="~{fragments/footer :: footer}"></div>
 <script>
     function confirmReset(event) {
         var confirmed = confirm("Are you sure you wish Delete Session record?");

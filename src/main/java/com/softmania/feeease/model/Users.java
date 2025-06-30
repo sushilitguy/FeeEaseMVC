@@ -3,7 +3,6 @@ package com.softmania.feeease.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

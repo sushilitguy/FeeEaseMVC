@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-light border-bottom" th:fragment="header">
     <div class="container-fluid">
         <a class="navbar-brand fw-bold text-primary" href="#">
-            <img src="/images/FeeEase.png" alt="FeeEase Logo" width="100" height="64">
+            <img src="/images/FeeEase.png" th:src="${SchoolLogo}" style="object-fit: cover;" alt="FeeEase Logo" height="64">
         </a>
         <div class="d-flex justify-content-center position-absolute w-100" style="left: 50%; transform: translateX(-50%);">
             <span class="navbar-text fw-bold" style="font-size: 2rem; color:#068388;" th:text="${SchoolName}">Dashboard</span>

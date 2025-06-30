@@ -5,6 +5,7 @@
         <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"
            th:classappend="${currentPage == 'school' ? 'active' : ''}">School Management</a>
         <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:classappend="${subPage == 'schoolProfile' ? 'active' : ''}" href="/fee_ease/school/profile">School Profile</a></li>
             <li><a class="dropdown-item" th:classappend="${subPage == 'session' ? 'active' : ''}" href="/fee_ease/school/sessions">Session Management</a></li>
             <li><a class="dropdown-item" th:classappend="${subPage == 'standard' ? 'active' : ''}" href="/fee_ease/school/standards">Standard Management</a></li>
             <li><a class="dropdown-item" th:classappend="${subPage == 'section' ? 'active' : ''}" href="/fee_ease/school/sections">Section Management</a></li>

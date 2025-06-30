@@ -5,6 +5,7 @@ import com.softmania.feeease.model.Students;
 import com.softmania.feeease.model.UserData;
 import com.softmania.feeease.service.SchoolManagementService;
 import com.softmania.feeease.service.StudentsService;
+import com.softmania.feeease.util.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -17,60 +18,43 @@ import java.util.List;
 @Controller
 @RequestMapping("/fee_ease")
 public class StudentController {
-    @Autowired
-    private StudentsService service;
-    @Autowired
-    private SchoolManagementService schoolManagementService;
+    private final StudentsService service;
+    private final SchoolManagementService schoolManagementService;
 
-    @RequestMapping(value = "/students", method = RequestMethod.GET)
+    @Autowired
+    public StudentController(StudentsService service, SchoolManagementService schoolManagementService) {
+        this.service = service;
+        this.schoolManagementService = schoolManagementService;
+    }
+
+    @GetMapping("/students")
     public String viewStudents(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
-        return "students";
+        model.addAttribute(Const.ATTR_SESSION_LIST, schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute(Const.ATTR_STANDARD_LIST, schoolManagementService.getAllStandards(school.getId()));
+        return Const.VIEW_STUDENTS;
     }
 
-    @RequestMapping(value = "/students/view/{id}")
-    public String viewStudentData(Authentication auth, Model model, @PathVariable int id) {
-        School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        Students student = service.getStudentById(id);
-        if(student != null) {
-            model.addAttribute("student", student);
-            return "viewStudent";
-        } else {
-            List<Students> students = service.getStudentsBySchool(school.getId());
-            model.addAttribute("SchoolName",school.getName().toUpperCase());
-            model.addAttribute("students", students);
-            model.addAttribute("errorMessage", "Student data with id " + id + " not found");
-            model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-            return "students";
-        }
-    }
-
-    @RequestMapping(value = "/students/add", method = RequestMethod.GET)
+    @GetMapping("/students/add")
     public String viewAddStudentForm(Authentication auth, Model model) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
-        model.addAttribute("SectionList", schoolManagementService.getAllSections(school.getId()));
-        return "studentForm";
+        model.addAttribute(Const.ATTR_SESSION_LIST, schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute(Const.ATTR_STANDARD_LIST, schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute(Const.ATTR_SECTION_LIST, schoolManagementService.getAllSections(school.getId()));
+        return Const.VIEW_STUDENT_FORM;
     }
 
-    @RequestMapping(value = "/students/edit/{studentId}", method = RequestMethod.GET)
+    @GetMapping("/students/edit/{studentId}")
     public String viewEditStudentForm(Authentication auth, Model model, @PathVariable int studentId) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
-        model.addAttribute("SectionList", schoolManagementService.getAllSections(school.getId()));
-        model.addAttribute("student", service.getStudentById(studentId));
-        return "studentForm";
+        model.addAttribute(Const.ATTR_SESSION_LIST, schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute(Const.ATTR_STANDARD_LIST, schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute(Const.ATTR_SECTION_LIST, schoolManagementService.getAllSections(school.getId()));
+        model.addAttribute(Const.ATTR_STUDENT, service.getStudentById(studentId));
+        return Const.VIEW_STUDENT_FORM;
     }
 
-    @RequestMapping(value = "/students/add", method = RequestMethod.POST)
+    @PostMapping("/students/add")
     public String addStudent(Authentication auth, Model model,
                              @RequestParam("studentName") String studentName,
                              @RequestParam("fatherName") String fatherName,
@@ -82,7 +66,6 @@ public class StudentController {
                              @RequestParam("sectionSelect") int sectionId,
                              @RequestParam("feesAmount") double feesAmount) {
         School school = ((UserData)auth.getPrincipal()).getUser().getSchool();
-        String error = "";
 
         Students student = new Students();
         student.setName(studentName);
@@ -99,19 +82,18 @@ public class StudentController {
         Students addedStudent = service.addStudent(student);
 
         if(addedStudent != null) {
-            model.addAttribute("successMessage", "Student Added Successfully");
+            model.addAttribute(Const.ATTR_SUCCESS, "Student Added Successfully");
         } else {
-            model.addAttribute("errorMessage", "Error while adding Student, Please try again");
+            model.addAttribute(Const.ATTR_ERROR, "Error while adding Student, Please try again");
         }
 
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
-        model.addAttribute("SectionList", schoolManagementService.getAllSections(school.getId()));
-        return "studentForm";
+        model.addAttribute(Const.ATTR_SESSION_LIST, schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute(Const.ATTR_STANDARD_LIST, schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute(Const.ATTR_SECTION_LIST, schoolManagementService.getAllSections(school.getId()));
+        return Const.VIEW_STUDENT_FORM;
     }
 
-    @RequestMapping(value = "/students/update", method = RequestMethod.POST)
+    @PostMapping("/students/update")
     public String updateStudent(Authentication auth, Model model,
                              @RequestParam("studentId") int studentId,
                              @RequestParam("studentName") String studentName,
@@ -141,35 +123,33 @@ public class StudentController {
             Students updatedStudent = service.updateStudent(student);
 
             if (updatedStudent != null) {
-                model.addAttribute("successMessage", "Student Added Successfully");
+                model.addAttribute(Const.ATTR_SUCCESS, "Student Added Successfully");
             } else {
-                model.addAttribute("errorMessage", "Error while adding Student, Please try again");
+                model.addAttribute(Const.ATTR_ERROR, "Error while adding Student, Please try again");
             }
         } else {
-            model.addAttribute("errorMessage", "Student not found, Please try with another Student");
+            model.addAttribute(Const.ATTR_ERROR, "Student not found, Please try with another Student");
         }
 
-        model.addAttribute("SchoolName",school.getName().toUpperCase());
-        model.addAttribute("Role", ((UserData)auth.getPrincipal()).getUser().getRole());
-        model.addAttribute("SessionList", schoolManagementService.getAllSessions(school.getId()));
-        model.addAttribute("StandardList", schoolManagementService.getAllStandards(school.getId()));
+        model.addAttribute(Const.ATTR_SESSION_LIST, schoolManagementService.getAllSessions(school.getId()));
+        model.addAttribute(Const.ATTR_STANDARD_LIST, schoolManagementService.getAllStandards(school.getId()));
 
-        return "students";
+        return Const.VIEW_STUDENTS;
     }
 
-    @RequestMapping(value = "/students/filter", method = RequestMethod.GET)
+    @GetMapping("/students/filter")
     @ResponseBody
     public List<Students> filterStudents(@RequestParam String session, @RequestParam int standardId) {
         return service.getStudentsBySessionIdAndStandard(schoolManagementService.getAcademicSessionBySessionName(session).getId(), standardId);
     }
 
-    @RequestMapping(value = "/students/enable", method = RequestMethod.POST)
+    @PostMapping("/students/enable")
     @ResponseBody
     public Students enableStudent(Authentication auth, Model model, @RequestParam int studentId) {
         return service.enableStudent(studentId);
     }
 
-    @RequestMapping(value = "/students/disable", method = RequestMethod.POST)
+    @PostMapping("/students/disable")
     @ResponseBody
     public Students disableStudent(Authentication auth, Model model, @RequestParam int studentId) {
         return service.disableStudent(studentId);
